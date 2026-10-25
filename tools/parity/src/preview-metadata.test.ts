@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import { build } from 'esbuild';
 import { createRequire } from 'node:module';
-import { extractPreview, previewMetadataPlugin } from './preview-metadata.ts';
+import { extractPreview, previewMetadataPlugin } from '../../../packages/email-preview/src/preview-metadata.ts';
 
 test('dev Preview metadata handles nested components, entities, title opt-out and padding', async () => {
   const result = await build({

@@ -5,7 +5,7 @@ import {
   forceSchemeQuery,
   profiles,
   resolveProfile,
-} from './preview-dark-mode.ts';
+} from '../../../packages/email-preview/src/preview-dark-mode.ts';
 
 test('scheme emulation preserves viewport conditions, lists and negation', () => {
   assert.equal(

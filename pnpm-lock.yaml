@@ -166,6 +166,9 @@ importers:
 
   .:
     devDependencies:
+      '@tallystone/preact-email':
+        specifier: workspace:*
+        version: link:packages/email
       '@types/html-to-text':
         specifier: 9.0.4
         version: 9.0.4
@@ -181,6 +184,9 @@ importers:
       esbuild:
         specifier: ^0.28.2
         version: 0.28.2
+      preact:
+        specifier: ^10.29.8
+        version: 10.29.8(preact-render-to-string@6.8.1)
       react:
         specifier: ^19.3.1
         version: 19.3.1
@@ -206,33 +212,64 @@ importers:
         specifier: ^6.8.1
         version: 6.8.1(preact@10.29.8)
 
-  packages/email-extras:
+  packages/email-code-block:
+    dependencies:
+      '@types/prismjs':
+        specifier: ^1.26.0
+        version: 1.26.6
+      prismjs:
+        specifier: ^1.30.0
+        version: 1.30.0
+    devDependencies:
+      preact:
+        specifier: ^10.29.8
+        version: 10.29.8(preact-render-to-string@6.8.1)
+
+  packages/email-markdown:
+    dependencies:
+      marked:
+        specifier: ^15.0.12
+        version: 15.0.12
+    devDependencies:
+      preact:
+        specifier: ^10.29.8
+        version: 10.29.8(preact-render-to-string@6.8.1)
+
+  packages/email-preview:
+    dependencies:
+      esbuild:
+        specifier: ^0.28.2
+        version: 0.28.2
+      htmlparser2:
+        specifier: ^12.0.0
+        version: 12.0.0
+    devDependencies:
+      '@tallystone/preact-email':
+        specifier: workspace:*
+        version: link:../email
+      preact:
+        specifier: ^10.29.8
+        version: 10.29.8(preact-render-to-string@6.8.1)
+
+  packages/email-tailwind:
     dependencies:
       '@types/css-tree':
         specifier: ^2.3.11
         version: 2.3.11
-      '@types/prismjs':
-        specifier: ^1.26.0
-        version: 1.26.6
       css-tree:
         specifier: 3.2.1
         version: 3.2.1
-      marked:
-        specifier: ^15.0.12
-        version: 15.0.12
-      preact:
-        specifier: ^10.29.8
-        version: 10.29.8(preact-render-to-string@6.8.1)
-      prismjs:
-        specifier: ^1.30.0
-        version: 1.30.0
       tailwindcss:
         specifier: ^4.1.0
         version: 4.3.3
+    devDependencies:
+      preact:
+        specifier: ^10.29.8
+        version: 10.29.8(preact-render-to-string@6.8.1)
 
   tools/parity:
     dependencies:
-      '@hillac/preact-email':
+      '@tallystone/preact-email':
         specifier: workspace:*
         version: link:../../packages/email
       htmlparser2:

@@ -1,0 +1,41 @@
+{
+  "name": "@tallystone/preact-email-preview",
+  "version": "0.1.0",
+  "description": "Local, email previews for Preact projects",
+  "type": "module",
+  "license": "MIT",
+  "files": [
+    "dist",
+    "LICENSE"
+  ],
+  "bin": {
+    "preact-email-preview": "./dist/cli.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/server.d.ts",
+      "import": "./dist/server.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json && node scripts/copy-assets.mjs"
+  },
+  "engines": {
+    "node": ">=22.18.0"
+  },
+  "dependencies": {
+    "esbuild": "^0.28.2",
+    "htmlparser2": "^12.0.0"
+  },
+  "peerDependencies": {
+    "@tallystone/preact-email": "^0.1.0",
+    "preact": "^10.29.8"
+  },
+  "devDependencies": {
+    "@tallystone/preact-email": "workspace:*",
+    "preact": "^10.29.8"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

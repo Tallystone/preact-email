@@ -148,44 +148,29 @@ await writeFile(
   components.map((c) => `export * from './${c}/index.js';`).join("\n") + "\n",
 );
 const optionalComponents = ["markdown", "code-block", "tailwind"];
-target = resolve("packages/email-extras/src/vendor");
-for (const component of optionalComponents) await walk(component);
-await copy("element-marker.ts");
-await copyFile(
-  join(source, "LICENSE.md"),
-  "packages/email-extras/LICENSE.react-email",
-);
-await copyFile(
-  join(source, "LICENSE.md"),
-  "packages/email/LICENSE.react-email",
-);
-await writeFile(
-  "packages/email/vendor-manifest.json",
-  JSON.stringify(
-    {
-      repository: "https://github.com/resend/react-email",
-      commit,
-      version: "6.11.3",
-      components,
-      optionalComponents,
-      patches: [
-        "React runtime imports, CSS augmentation and missing type imports -> preact/compat",
-        "narrow component styles to CSS objects; preserve nullable Preact CSS values",
-        "narrow CSS property keys to strings",
-        "Preact VNode type guards and component predicate types",
-        "explicit css-tree visitor parameter types",
-        "guarded regex capture non-null assertion",
-      ],
-      sha256: hashes,
-    },
-    null,
-    2,
-  ) + "\n",
-);
-await copyFile(
-  "packages/email/vendor-manifest.json",
-  "packages/email-extras/vendor-manifest.json",
-);
-console.log(
-  `Synced ${Object.keys(hashes).length} component source files at ${commit}`,
-);
+const patches = [
+  "React runtime imports, CSS augmentation and missing type imports -> preact/compat",
+  "narrow component styles to CSS objects; preserve nullable Preact CSS values",
+  "narrow CSS property keys to strings",
+  "Preact VNode type guards and component predicate types",
+  "explicit css-tree visitor parameter types",
+  "guarded regex capture non-null assertion",
+];
+async function manifest(packageDir: string, included: string[], marker: boolean) {
+  await copyFile(join(source, "LICENSE.md"), join(packageDir, "LICENSE.react-email"));
+  await writeFile(join(packageDir, "vendor-manifest.json"), JSON.stringify({
+    repository: "https://github.com/resend/react-email", commit, version: "6.11.3",
+    components: included, optionalComponents: [], patches,
+    sha256: Object.fromEntries(Object.entries(hashes).filter(([file]) =>
+      included.some(component => file.startsWith(component + "/")) || (marker && file === "element-marker.ts"))),
+  }, null, 2) + "\n");
+}
+await manifest("packages/email", components, true);
+for (const component of optionalComponents) {
+  const packageDir = "packages/email-" + component;
+  target = resolve(packageDir, "src/vendor");
+  await walk(component);
+  if (component !== "markdown") await copy("element-marker.ts");
+  await manifest(packageDir, [component], component !== "markdown");
+}
+console.log(`Synced ${Object.keys(hashes).length} component source files at ${commit}`);

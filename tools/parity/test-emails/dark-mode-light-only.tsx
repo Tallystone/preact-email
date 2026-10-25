@@ -1,4 +1,4 @@
-import { Button, Heading, Section, Text } from '@hillac/preact-email';
+import { Button, Heading, Section, Text } from '@tallystone/preact-email';
 import { DarkLayout, textStyle } from './components/dark-layout.js';
 
 export interface LightOnlyProps {

@@ -6,7 +6,7 @@ import {
   Row,
   Section,
   Text,
-} from '@hillac/preact-email';
+} from '@tallystone/preact-email';
 import { ActionPanel, EmailShell, styles } from './components/layout.js';
 
 export interface CommunityDigestProps {

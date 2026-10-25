@@ -45,7 +45,7 @@ export async function loadTsxBenchmarkFixtures(): Promise<{
           compilerOptions: { jsx: 'react-jsx', jsxImportSource: runtime },
         },
         alias: {
-          '@hillac/preact-email':
+          '@tallystone/preact-email':
             runtime === 'react'
               ? 'react-email'
               : fileURLToPath(

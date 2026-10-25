@@ -1,4 +1,4 @@
-import { Column, Heading, Img, Row, Section, Text } from '@hillac/preact-email';
+import { Column, Heading, Img, Row, Section, Text } from '@tallystone/preact-email';
 import { ActionPanel, EmailShell, Facts, styles } from './components/layout.js';
 
 interface Item {

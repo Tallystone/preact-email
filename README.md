@@ -3,7 +3,10 @@
 A pnpm / TypeScript monorepo that vendors the **current combined `react-email` package's component source**, with a small Preact renderer. `react-email@6.11.3`, React and React DOM are development-only comparison dependencies. There is no dependency on the deprecated `@react-email/components` package.
 
 - `packages/email`: 16 core components, synchronous and asynchronous HTML rendering, and plain text via a compile-once html-to-text converter. Runtime dependencies: Preact 10, preact-render-to-string, and html-to-text.
-- `packages/email-extras`: optional Markdown, CodeBlock, and Tailwind components with their own dependencies. Installing the core does not install these extras.
+- `packages/email-markdown`: `@tallystone/preact-email-markdown`, with marked.
+- `packages/email-code-block`: `@tallystone/preact-email-code-block`, with Prism.
+- `packages/email-tailwind`: `@tallystone/preact-email-tailwind`, with Tailwind CSS and css-tree.
+- `packages/email-preview`: `@tallystone/preact-email-preview`, an installable local preview server with recursive email discovery.
 - `tools/parity`: shared template fixtures, upstream comparisons, and benchmarks.
 - [`tools/parity/test-emails`](tools/parity/test-emails/README.md): eight standalone TSX emails with eighteen scenarios, nested reusable layouts, rich styling, and automatic React/Preact parity tests.
 - `scripts/sync-components.ts`: reproducible, pinned component-only source sync. Neither upstream rendering nor CLI/dev-server source is copied.
@@ -31,7 +34,7 @@ The original sketches under `scratch/` are preserved and excluded from compilati
 Configure your application's TypeScript with `"jsx": "react-jsx"` and `"jsxImportSource": "preact"`. Templates must create Preact elements.
 
 ```tsx
-import { Html, Head, Body, Text, Button, renderEmail } from '@hillac/preact-email';
+import { Html, Head, Body, Text, Button, renderEmail } from '@tallystone/preact-email';
 
 const email = (
   <Html>
@@ -48,8 +51,8 @@ const { html, text } = renderEmail(email);
 For HTML alone, these entry points avoid loading text conversion:
 
 ```tsx
-import { Text } from '@hillac/preact-email/components';
-import { render } from '@hillac/preact-email/render';
+import { Text } from '@tallystone/preact-email/components';
+import { render } from '@tallystone/preact-email/render';
 const html = render(<Text>Hello</Text>);
 ```
 
@@ -57,19 +60,33 @@ const html = render(<Text>Hello</Text>);
 
 The html-to-text converter compiles its options lazily on the first text conversion and reuses that function. It uses upstream's default formatting options, plus a title skip selector to account for Preact's lack of title hoisting. Plain text contains decoded characters, not HTML entities. The previous custom converters and method-selection API have been removed.
 
-Optional components live in separate entry points:
+Optional components are independently installable packages:
 
 ```tsx
-import { Markdown } from '@hillac/preact-email-extras/markdown';
-import { CodeBlock, dracula } from '@hillac/preact-email-extras/code-block';
-import { Tailwind } from '@hillac/preact-email-extras/tailwind';
-import { renderAsync, toPlainText } from '@hillac/preact-email';
+import { Markdown } from '@tallystone/preact-email-markdown';
+import { CodeBlock, dracula } from '@tallystone/preact-email-code-block';
+import { Tailwind } from '@tallystone/preact-email-tailwind';
+import { renderAsync, toPlainText } from '@tallystone/preact-email';
 
 const html = await renderAsync(<Tailwind>{email}</Tailwind>);
 const text = toPlainText(html);
 ```
 
-The extras package installs marked, prismjs, css-tree and tailwindcss. Its separate entry points prevent importing unrelated optional component modules, but all extras dependencies are installed if you install that package.
+Install only the optional packages you use. Markdown, CodeBlock and Tailwind do not depend on one another, and the core does not install any of them.
+
+## Previewing emails in your project
+
+After publication, install the preview server as a development dependency:
+
+```sh
+pnpm add @tallystone/preact-email preact@^10.29.8
+pnpm add -D @tallystone/preact-email-preview
+pnpm exec preact-email-preview --dir ./emails
+```
+
+The default directory is `./emails`. Nested TSX emails appear in a folder tree, with one sidebar entry per email and a selector for its scenarios. Live updates are enabled by default. Bundles and rendered emails stay in memory. The server has only esbuild and htmlparser2 as direct runtime dependencies; it uses your installed core and Preact packages. No React Email CLI or React runtime is needed.
+
+See [the preview package documentation](packages/email-preview/README.md) for template conventions, assets and CLI options.
 
 ## Compatibility and limits
 
@@ -81,7 +98,7 @@ Text formatting is delegated to html-to-text 9.0.5, matching the pinned upstream
 
 ## Vendoring
 
-The source is pinned to [resend/react-email commit e0561e1](https://github.com/resend/react-email/tree/e0561e164e9c28859d24373804e30b364931ee77), whose package version is 6.11.3. Parity is independently verified against the published 6.11.3 release. Each package includes upstream's MIT license and a manifest containing original source SHA-256 hashes and the applied adaptation categories.
+The source is pinned to [resend/react-email commit e0561e1](https://github.com/resend/react-email/tree/e0561e164e9c28859d24373804e30b364931ee77), whose package version is 6.11.3. Parity is independently verified against the published 6.11.3 release. Each component package includes upstream's MIT license and a manifest containing original source SHA-256 hashes and the applied adaptation categories.
 
 ```sh
 git clone https://github.com/resend/react-email.git /tmp/react-email-upstream

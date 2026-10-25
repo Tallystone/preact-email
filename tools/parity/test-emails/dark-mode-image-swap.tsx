@@ -1,4 +1,4 @@
-import { Heading, Img, Link, Section, Text } from '@hillac/preact-email';
+import { Heading, Img, Link, Section, Text } from '@tallystone/preact-email';
 import { DarkLayout, darkColors, textStyle } from './components/dark-layout.js';
 
 export interface ImageSwapProps {

@@ -1,9 +1,9 @@
 {
-  "name": "@hillac/email-parity",
+  "name": "@tallystone/email-parity",
   "private": true,
   "type": "module",
   "dependencies": {
-    "@hillac/preact-email": "workspace:*",
+    "@tallystone/preact-email": "workspace:*",
     "preact": "^10.29.8",
     "htmlparser2": "^12.0.0"
   }

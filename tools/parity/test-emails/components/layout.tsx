@@ -16,7 +16,7 @@ import {
   Row,
   Section,
   Text,
-} from '@hillac/preact-email';
+} from '@tallystone/preact-email';
 
 const palette = {
   ink: '#213b39',

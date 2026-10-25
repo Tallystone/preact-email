@@ -1,0 +1,52 @@
+{
+  "repository": "https://github.com/resend/react-email",
+  "commit": "e0561e164e9c28859d24373804e30b364931ee77",
+  "version": "6.11.3",
+  "components": [
+    "tailwind"
+  ],
+  "optionalComponents": [],
+  "patches": [
+    "React runtime imports, CSS augmentation and missing type imports -> preact/compat",
+    "narrow component styles to CSS objects; preserve nullable Preact CSS values",
+    "narrow CSS property keys to strings",
+    "Preact VNode type guards and component predicate types",
+    "explicit css-tree visitor parameter types",
+    "guarded regex capture non-null assertion"
+  ],
+  "sha256": {
+    "element-marker.ts": "17be55677cbdf84316093f6c32814d7c2182a5a3c33dfbf0388c50230a792130",
+    "tailwind/hooks/use-suspended-promise.ts": "d024df5df72f5cf1c191cbf2b28329503299c18ff27c71257b5d36e860ca868a",
+    "tailwind/index.ts": "669cecb826ddb1b5724885fcdb38b82184ab4ffcf96066cbfdef67b074796333",
+    "tailwind/inline-styles.ts": "ee012601226217b0dd4d16c4c064b32bec204bf57ce901788161a15ab421acb6",
+    "tailwind/sanitize-stylesheet.ts": "0c00a44ea9ed7cce61ee24cde193f13e45c4942eba8d11b77ded31bf0ac065d6",
+    "tailwind/tailwind.tsx": "1fccf4961a2e61d2e5edf9e930e151d37ddf3cd700fea0737688f61af4b49bf0",
+    "tailwind/utils/compatibility/escape-class-name.ts": "74693792580b9a903686f9c0fc6d140fe508acac0be1ded309a6f7b9bddfd2b8",
+    "tailwind/utils/compatibility/get-react-property.ts": "070c1d569f2fb621e86c8af7a8c984d19e0d9ef845602e073615f1bc32e4b920",
+    "tailwind/utils/compatibility/sanitize-class-name.ts": "0e9601f1aaeb52d280efb85d6dab35527decc06f4b5130ff959f74bc7da49581",
+    "tailwind/utils/compatibility/unescape-class.ts": "1c95f3bd6145814b75b7b6c9cfa9c0e5551f6d76ce74e75f59d324431fc06385",
+    "tailwind/utils/css/constants.ts": "6ecb210b360fd81b6e4552b6ee10bc8f5500b3422d7717f09c7d06d2cf28d347",
+    "tailwind/utils/css/downlevel-for-email-clients.ts": "d55409c5b8a4b05c30114db66a3163d7ccbdbc741cc541388684e2856366f416",
+    "tailwind/utils/css/extract-rules-per-class.ts": "12cd7da270178f5a15d11f5da53d5e7315c74f2dd353d49eaaf009dc467aa775",
+    "tailwind/utils/css/get-custom-properties.ts": "207b4a6f6ee730c1e646262a13daba88a44af6b37bacac7998552314edb41ea5",
+    "tailwind/utils/css/is-part-inlinable.ts": "417884268b836355a3dd2b0593227ec7ded0fc1651cca83e6942dc93db2280b8",
+    "tailwind/utils/css/is-rule-inlinable.ts": "e004ba6994ee7de0ca96f014900548c3b5972b74487ef43f8aad9b3f10e6ef1e",
+    "tailwind/utils/css/make-inline-styles-for.ts": "fc95e8279958cdddc02ec0e7ac84e1ce7cf3eceb21280f25ad11764c3c4f2598",
+    "tailwind/utils/css/resolve-all-css-variables.ts": "bc5be24c515ea94e88cc2d0db2c1350fdab0320135e7b0739cd4682728791832",
+    "tailwind/utils/css/resolve-calc-expressions.ts": "e4d57eab7ccb4c343bfcc3b1639d327fec03e22a80a2be645d20bece2070ee66",
+    "tailwind/utils/css/sanitize-declarations.ts": "944250de31464ea718450e8ae802fa411b3786ddbd2e81c7cb3173b95da63586",
+    "tailwind/utils/css/sanitize-non-inlinable-rules.ts": "41ff6f26d234641959e530275283b5c0e173cbd5e0eb6a99189e9de637a9c9de",
+    "tailwind/utils/css/split-mixed-rule.ts": "3f48f040379b0f10f8287adbd9ba5f3bed9b3931b3bf000760ddd38350fc026e",
+    "tailwind/utils/css/strip-empty-tailwind-vars.ts": "b33da38bb9accf5049652f468bb60b679e26829c1926d428bd1fa5c8c1ca1fd0",
+    "tailwind/utils/css/unwrap-value.ts": "48a1bf3a2eb1254bd6e4d49bec40abc15617d758c8e600f8523f15494cccfa0f",
+    "tailwind/utils/react/is-component.ts": "2e759f9b700747dbbc9e85129ad165bfda43093e91af2dd62ef31c4237fe0e23",
+    "tailwind/utils/react/map-react-tree.ts": "960a59455e6b0189e73a7cb348ad2b1df7ba4061adae9de5dd2b108dbc0da126",
+    "tailwind/utils/tailwindcss/clone-element-with-inlined-styles.ts": "f2fec7f964aa428094599cafc9b24ffc570c91afdc3d0053b9614a0b935be376",
+    "tailwind/utils/tailwindcss/setup-tailwind.ts": "2c69795521ecab574a82ed9cda7c2aa2a6a799859013c648f7b5911315360fa1",
+    "tailwind/utils/tailwindcss/tailwind-stylesheets/index.ts": "a475e77aef61e652529b503587569ad3a1807c924131902577f83da507217fa5",
+    "tailwind/utils/tailwindcss/tailwind-stylesheets/preflight.ts": "3cfda170fb8a519a6f099e10220bec2a40d0049a323882ef09c9895232d75c42",
+    "tailwind/utils/tailwindcss/tailwind-stylesheets/theme.ts": "d5121627a3c784e71fc3625d4e48bec8a6f92d6e1edee5a9cf7afb463d008cad",
+    "tailwind/utils/tailwindcss/tailwind-stylesheets/utilities.ts": "bf18feb3ba76de5ee42e25864be54f5a6abbb14ca4ab5d5aeab660d47a774a05",
+    "tailwind/utils/text/from-dash-case-to-camel-case.ts": "fa9de6f412cc9d2661c500a3283be38cd6db6a0ac2fb6670ce32c949946bdfaf"
+  }
+}

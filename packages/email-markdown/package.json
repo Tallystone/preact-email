@@ -1,0 +1,33 @@
+{
+  "name": "@tallystone/preact-email-markdown",
+  "version": "0.1.0",
+  "type": "module",
+  "files": [
+    "dist",
+    "LICENSE.react-email",
+    "vendor-manifest.json"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/vendor/markdown/index.d.ts",
+      "import": "./dist/vendor/markdown/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "peerDependencies": {
+    "preact": "^10.29.8"
+  },
+  "devDependencies": {
+    "preact": "^10.29.8"
+  },
+  "dependencies": {
+    "marked": "^15.0.12"
+  },
+  "license": "MIT",
+  "description": "markdown component for Preact email",
+  "publishConfig": {
+    "access": "public"
+  }
+}

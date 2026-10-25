@@ -1,0 +1,25 @@
+{
+  "repository": "https://github.com/resend/react-email",
+  "commit": "e0561e164e9c28859d24373804e30b364931ee77",
+  "version": "6.11.3",
+  "components": [
+    "code-block"
+  ],
+  "optionalComponents": [],
+  "patches": [
+    "React runtime imports, CSS augmentation and missing type imports -> preact/compat",
+    "narrow component styles to CSS objects; preserve nullable Preact CSS values",
+    "narrow CSS property keys to strings",
+    "Preact VNode type guards and component predicate types",
+    "explicit css-tree visitor parameter types",
+    "guarded regex capture non-null assertion"
+  ],
+  "sha256": {
+    "element-marker.ts": "17be55677cbdf84316093f6c32814d7c2182a5a3c33dfbf0388c50230a792130",
+    "code-block/code-block.tsx": "27aabd1e9ba32d7d1124c46e7b045549a8b6c1efd5d05147c896ac285c19a69f",
+    "code-block/index.ts": "d4fe3874b0b8dd0ce1517e4cde904200eea4e62f4c25c8cb99b08d9ddd7cfe1d",
+    "code-block/languages-available.ts": "411c9d61c4135290785a59ff34feca32aef8cdc872944e383cbf9b79b78fc645",
+    "code-block/prism.ts": "46dab18a23aa7714e857fb741957de01e4639a81660b70d95d30c98cc7c29f1a",
+    "code-block/themes.ts": "d9f21206f6c8eb08ee62f5eb3f2826eae0a88187c7d71c9b5c7325481a1302bd"
+  }
+}

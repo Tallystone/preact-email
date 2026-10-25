@@ -1,4 +1,4 @@
-import { CodeInline, Heading, Link, Text } from '@hillac/preact-email';
+import { CodeInline, Heading, Link, Text } from '@tallystone/preact-email';
 import { ActionPanel, EmailShell, Facts, styles } from './components/layout.js';
 
 export interface AccessNoticeProps {

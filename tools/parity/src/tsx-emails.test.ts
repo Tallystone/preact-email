@@ -64,7 +64,7 @@ test('standalone TSX email parity', async (t) => {
           compilerOptions: { jsx: 'react-jsx', jsxImportSource: runtime },
         },
         alias: {
-          '@hillac/preact-email': fileURLToPath(
+          '@tallystone/preact-email': fileURLToPath(
             new URL('../../../packages/email/src/index.ts', import.meta.url),
           ),
         },

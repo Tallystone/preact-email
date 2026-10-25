@@ -8,7 +8,7 @@ export default [
     setup(build) {
       build.initialOptions.alias = {
         ...build.initialOptions.alias,
-        '@hillac/preact-email': 'react-email',
+        '@tallystone/preact-email': 'react-email',
       };
       // Preserve the UI's instrumented React JSX runtime when it supplies one.
       // The CLI export command has no runtime override and would otherwise

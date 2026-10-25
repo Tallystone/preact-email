@@ -1,5 +1,5 @@
 {
-  "name": "@hillac/preact-email",
+  "name": "@tallystone/preact-email",
   "version": "0.1.0",
   "type": "module",
   "files": [
@@ -35,5 +35,8 @@
   },
   "description": "Lightweight Preact email components and rendering, vendored from React Email",
   "license": "MIT",
-  "sideEffects": false
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  }
 }

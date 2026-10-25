@@ -6,7 +6,7 @@ import {
   Html,
   Preview,
   Text,
-} from '@hillac/preact-email';
+} from '@tallystone/preact-email';
 
 export function DarkLayout({
   preview,

@@ -51,6 +51,10 @@
       nav a[aria-current] {
         background: #e9e9e7;
       }
+      nav details { margin: 4px 0; }
+      nav summary { cursor: pointer; padding: 7px 10px; color: #787774; font-size: 12px; overflow-wrap: anywhere; }
+      .folder-children { padding-left: 12px; }
+      .dark nav summary { color: #a1a19b; }
       nav strong {
         font-size: 13px;
         font-weight: 500;
@@ -471,6 +475,7 @@
       let emails = [],
         source,
         revision = 0;
+      let buildError = '';
       let disconnected = false;
       let previewRequest = 0;
       let requestedPreview = '';
@@ -558,33 +563,52 @@
         }
         $('count').textContent =
           groups.size + (groups.size === 1 ? ' email' : ' emails');
-        document.querySelector('nav').replaceChildren(
-          ...[...groups.values()].map((variants) => {
-            const item =
-              variants.find((item) => item.id === email?.id) || variants[0];
-            const a = document.createElement('a'),
-              title = document.createElement('strong');
+        const nav = document.querySelector('nav');
+        const expanded = new Map([...nav.querySelectorAll('details')].map(folder => [folder.dataset.folder, folder.open]));
+        const tree = { folders: new Map(), entries: [] };
+        for (const [template, variants] of groups) {
+          const parts = template.split('/');
+          const name = parts.pop();
+          let branch = tree;
+          let path = '';
+          for (const part of parts) {
+            path = path ? path + '/' + part : part;
+            if (!branch.folders.has(part)) branch.folders.set(part, { path, folders: new Map(), entries: [] });
+            branch = branch.folders.get(part);
+          }
+          branch.entries.push({ template, name, variants });
+        }
+        function renderFolder(branch) {
+          const nodes = [];
+          for (const [name, folder] of branch.folders) {
+            const details = document.createElement('details');
+            details.dataset.folder = folder.path;
+            details.open = expanded.get(folder.path) ?? true;
+            const summary = document.createElement('summary');
+            summary.textContent = name;
+            const children = document.createElement('div');
+            children.className = 'folder-children';
+            children.append(...renderFolder(folder));
+            details.append(summary, children);
+            nodes.push(details);
+          }
+          for (const { template, name, variants } of branch.entries) {
+            const item = variants.find(item => item.id === email?.id) || variants[0];
+            const a = document.createElement('a');
+            const title = document.createElement('strong');
             const url = new URL(location.href);
             url.searchParams.set('email', item.id);
-            a.href = url;
-            title.textContent = item.template;
-            a.append(title);
+            a.href = url; a.title = template; title.textContent = name; a.append(title);
             if (item.id === email?.id) a.setAttribute('aria-current', 'page');
-            a.onclick = (event) => {
-              if (
-                event.button ||
-                event.metaKey ||
-                event.ctrlKey ||
-                event.shiftKey ||
-                event.altKey
-              )
-                return;
-              event.preventDefault();
-              change({ email: item.id });
+            a.onclick = event => {
+              if (event.button || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+              event.preventDefault(); change({ email: item.id });
             };
-            return a;
-          }),
-        );
+            nodes.push(a);
+          }
+          return nodes;
+        }
+        nav.replaceChildren(...renderFolder(tree));
         const variants = groups.get(email?.template) ?? [];
         $('scenario').replaceChildren(
           ...variants.map((item) => {
@@ -602,7 +626,14 @@
         $('preview-row').hidden = !email?.preview;
         $('metadata').hidden =
           !email?.subject && !email?.preview && variants.length < 2;
-        if (email) {
+        $('error').textContent = buildError || email?.error || '';
+        $('error').hidden = !$('error').textContent;
+        if (email?.error) {
+          ++previewRequest;
+          requestedPreview = '';
+          frame.style.visibility = 'hidden';
+        }
+        if (email && !email.error) {
           const url =
             '/email?' +
             new URLSearchParams({
@@ -635,8 +666,7 @@
           $('status').textContent = state().live
             ? 'Live connected'
             : 'Live paused';
-          $('error').textContent = data.error;
-          $('error').hidden = !data.error;
+          buildError = data.error;
           draw();
         } catch {
           setDisconnected(true);

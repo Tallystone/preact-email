@@ -11,7 +11,7 @@
     "sync:components": "node scripts/sync-components.ts",
     "size": "pnpm build && node scripts/size.ts",
     "check": "pnpm test && pnpm typecheck",
-    "preview": "node tools/parity/src/preview.ts"
+    "preview": "pnpm build && node packages/email-preview/dist/cli.js --dir tools/parity/test-emails"
   },
   "devDependencies": {
     "@types/html-to-text": "9.0.4",
@@ -22,7 +22,9 @@
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
     "react-email": "6.11.3",
-    "typescript": "^7.0.2"
+    "typescript": "^7.0.2",
+    "@tallystone/preact-email": "workspace:*",
+    "preact": "^10.29.8"
   },
   "engines": {
     "node": ">=22.18.0"

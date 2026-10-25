@@ -8,14 +8,14 @@ export const previewMetadataPlugin: Plugin = {
   name: 'preview-metadata',
   setup(build) {
     build.onLoad(
-      { filter: /\/vendor\/preview\/preview\.tsx$/ },
-      async ({ path }) => ({
-        contents: (await readFile(path, 'utf8')).replace(
-          'ref={ref}',
-          'data-email-preview="" ref={ref}',
-        ),
-        loader: 'tsx',
-      }),
+      { filter: /[\\/]vendor[\\/]preview[\\/]preview\.(tsx|js)$/ },
+      async ({ path }) => {
+        const source = await readFile(path, 'utf8');
+        const contents = path.endsWith('.tsx')
+          ? source.replace('ref={ref}', 'data-email-preview="" ref={ref}')
+          : source.replace(/ref:\s*ref\b/, '"data-email-preview": "", ref: ref');
+        return { contents, loader: path.endsWith('.tsx') ? 'tsx' : 'js' };
+      },
     );
   },
 };

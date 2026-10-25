@@ -1,0 +1,34 @@
+{
+  "name": "@tallystone/preact-email-code-block",
+  "version": "0.1.0",
+  "type": "module",
+  "files": [
+    "dist",
+    "LICENSE.react-email",
+    "vendor-manifest.json"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/vendor/code-block/index.d.ts",
+      "import": "./dist/vendor/code-block/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "peerDependencies": {
+    "preact": "^10.29.8"
+  },
+  "devDependencies": {
+    "preact": "^10.29.8"
+  },
+  "dependencies": {
+    "prismjs": "^1.30.0",
+    "@types/prismjs": "^1.26.0"
+  },
+  "license": "MIT",
+  "description": "code-block component for Preact email",
+  "publishConfig": {
+    "access": "public"
+  }
+}

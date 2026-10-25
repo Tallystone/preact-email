@@ -1,0 +1,23 @@
+{
+  "repository": "https://github.com/resend/react-email",
+  "commit": "e0561e164e9c28859d24373804e30b364931ee77",
+  "version": "6.11.3",
+  "components": [
+    "markdown"
+  ],
+  "optionalComponents": [],
+  "patches": [
+    "React runtime imports, CSS augmentation and missing type imports -> preact/compat",
+    "narrow component styles to CSS objects; preserve nullable Preact CSS values",
+    "narrow CSS property keys to strings",
+    "Preact VNode type guards and component predicate types",
+    "explicit css-tree visitor parameter types",
+    "guarded regex capture non-null assertion"
+  ],
+  "sha256": {
+    "markdown/index.ts": "055e5664b0d68ca4d6b872090f6ab6c27b7cda3466763714dc1905e78ff208c8",
+    "markdown/markdown.tsx": "e3393d4fa1455d7e1d752b814c369d7727e9e22af0adf3e8b20c97118d368a66",
+    "markdown/styles.ts": "d296598601a15019343a81af1726c1c35e58cc085201af7e2f9b9d9fd152c8ac",
+    "markdown/utils/parse-css-in-js-to-inline-css.ts": "bcbd3e47429211cd6c41e491a95c5c627c402c3a00e26b7d453bcc9469c3c7e2"
+  }
+}

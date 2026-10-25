@@ -1,6 +1,6 @@
 # Standalone TSX test emails
 
-These fictional Fern Post emails use original copy and reusable components. Each file exports a default template and a `scenarios` array with deterministic props. They import `@hillac/preact-email` and use Preact JSX normally.
+These fictional Fern Post emails use original copy and reusable components. Each file exports a default template and a `scenarios` array with deterministic props. They import `@tallystone/preact-email` and use Preact JSX normally.
 
 | Template | Scenarios | Coverage |
 | --- | --- | --- |
@@ -21,9 +21,9 @@ Start the local live preview from the repository root:
 pnpm preview
 ```
 
-Open http://localhost:3000 (set `PORT` to change it). The server binds only to localhost by default. Use `pnpm preview --host` to listen on network interfaces, or `pnpm preview --host 192.168.1.10` to bind a specific interface. Network access is opt-in; `--host` is a bind setting, not a firewall. Each email appears once in the sidebar. Click its row, then choose a scenario from the selector to the right of the subject and preview text. The selector is hidden for emails with one preview. The toolbar includes viewport presets, custom width/height, an email Dark mode toggle with a Dark-mode approximation selector (visible only when enabled), Open, Text, and Live controls. The selected email and tool settings are stored in the URL and support browser back/forward. Client profiles cover Apple Mail (macOS/iOS), Gmail (desktop/mobile web, Android/iOS with Google or other/legacy accounts), and Outlook (classic/new Windows, web, macOS, iOS and Android).
+Open http://localhost:3000 (use `pnpm preview --port 3001` to change it). The server binds only to localhost by default. Use `pnpm preview --host` to listen on network interfaces, or `pnpm preview --host 192.168.1.10` to bind a specific interface. Network access is opt-in; `--host` is a bind setting, not a firewall. Each email appears once in the sidebar. Click its row, then choose a scenario from the selector to the right of the subject and preview text. The selector is hidden for emails with one preview. The toolbar includes viewport presets, custom width/height, an email Dark mode toggle with a Dark-mode approximation selector (visible only when enabled), Open, Text, and Live controls. The selected email and tool settings are stored in the URL and support browser back/forward. Client profiles cover Apple Mail (macOS/iOS), Gmail (desktop/mobile web, Android/iOS with Google or other/legacy accounts), and Outlook (classic/new Windows, web, macOS, iOS and Android).
 
-The server bundles and renders templates in memory without writing generated HTML, text, or bundles to disk. Saving templates, shared components, core source, or the preview UI reloads the page while preserving URL state. Errors appear above the last successful preview. Live updates are on by default; turn Live off to pause browser updates. Stop the server with Ctrl+C.
+The server bundles and renders templates. Live updates are on by default; turn Live off to pause browser updates. Stop the server with Ctrl+C.
 
 Templates can expose a subject function using the same props as the email:
 
@@ -61,10 +61,10 @@ The benchmark includes these scenarios by default alongside the small fixtures. 
 
 Equivalent implementations are grouped into seven choices: authored CSS (Apple Mail / Outlook macOS), unchanged Gmail web, Gmail Android with and without the Google-account opt-out, Gmail iOS with the opt-out, full adjustment without the opt-out (Gmail iOS other/legacy / Outlook classic), and selective adjustment with Outlook hooks (new Windows / web / mobile). Existing client URLs still resolve to the matching group.
 
-These are local browser previews, not actual email-client engines or exhaustive historical version emulators. The selected profile and dark toggle are saved in the URL. The surrounding UI follows the system theme independently. The selector only models dark-mode appearance, not general email-client rendering. Open opens the original email; transformations apply only inside the preview frame.
+These are local browser previews, not actual email-client engines or exhaustive historical version emulators. The selected profile and dark toggle are saved in the URL. The surrounding UI is currently fixed to light mode. The selector only models dark-mode appearance, not general email-client rendering. Open opens the original email; transformations apply only inside the preview frame.
 
 - Apple Mail and the Outlook macOS authored-CSS profile activate the email's own dark media queries when it declares dark color-scheme support. Light mode forces light queries regardless of your operating system. Responsive conditions remain active.
-- Gmail web profiles keep the message light while the preview UI darkens.
+- Gmail web profiles keep the message light.
 - Gmail Android and modern Outlook profiles approximate selective recoloring; Gmail iOS and classic Outlook approximate full color adjustment. These use a local hue-preserving color heuristic, not the clients' proprietary algorithms.
 - Current Gmail Google-account profiles honor `<meta name="color-scheme" content="light only">`. Other-account/legacy profiles omit that opt-out.
 - Images, SVG content, gradients, background images and pseudo-elements are not recolored. Outlook profiles expose `data-ogsc` / `data-ogsb` hooks, but don't reproduce its sanitizer, Word renderer, all CSS support differences or contrast algorithms. Cross-origin stylesheets cannot be inspected.
