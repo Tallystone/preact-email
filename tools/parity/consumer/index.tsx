@@ -7,5 +7,5 @@ void result;
 import { Markdown } from '../../../packages/email-markdown/dist/vendor/markdown/index.js';
 import { CodeBlock, dracula } from '../../../packages/email-code-block/dist/vendor/code-block/index.js';
 import { Tailwind } from '../../../packages/email-tailwind/dist/vendor/tailwind/index.js';
-const extras = <Tailwind><Markdown>{'# Hi'}</Markdown><CodeBlock language="javascript" theme={dracula} code="const n = 1" /></Tailwind>;
-void extras;
+const optionalComponents = <Tailwind><Markdown>{'# Hi'}</Markdown><CodeBlock language="javascript" theme={dracula} code="const n = 1" /></Tailwind>;
+void optionalComponents;

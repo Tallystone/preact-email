@@ -19,7 +19,6 @@ import {
 } from '../../../packages/email/dist/index.js';
 import { htmlToTextBaseline } from './html-to-text-baseline.ts';
 import { normalizeHtml } from './normalize.ts';
-import previewPlugins from '../../../scripts/react-email-preview.ts';
 
 interface Scenario {
   name: string;
@@ -58,15 +57,14 @@ test('standalone TSX email parity', async (t) => {
         format: 'esm',
         target: 'node22',
         jsx: 'automatic',
-        jsxImportSource: 'preact',
-        plugins: runtime === 'react' ? previewPlugins : [],
+        jsxImportSource: runtime,
         tsconfigRaw: {
           compilerOptions: { jsx: 'react-jsx', jsxImportSource: runtime },
         },
         alias: {
-          '@tallystone/preact-email': fileURLToPath(
-            new URL('../../../packages/email/src/index.ts', import.meta.url),
-          ),
+          '@tallystone/preact-email': runtime === 'react'
+            ? 'react-email'
+            : fileURLToPath(new URL('../../../packages/email/src/index.ts', import.meta.url)),
         },
         // Resolve bare external imports from the parity workspace, where Preact
         // and the workspace package are explicitly declared dependencies.
