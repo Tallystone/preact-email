@@ -3,13 +3,13 @@
 React Email components, vendored with minimal dependencies and a Preact renderer. Sync or async rendering, HTML and plain text, and an optional lightweight preview server.
 
 <!-- benchmark-summary:start -->
-**2.1× faster HTML rendering; 2.8× faster HTML + plain text** than React Email in the latest benchmark below.
+**2.0× faster HTML rendering; 2.6× faster HTML + plain text** than React Email in the latest benchmark below.
 <!-- benchmark-summary:end -->
 
 ## Usage
 
 ```sh
-pnpm add @tallystone/preact-email preact@10
+pnpm add @tallystone/preact-email preact
 ```
 
 Set `"jsx": "react-jsx"` and `"jsxImportSource": "preact"` in your tsconfig.
@@ -51,10 +51,10 @@ Open http://localhost:3000. Finds TSX emails recursively; shows folders, scenari
 <!-- benchmarks:start -->
 | Renderer | Emails/sec | Seconds/email |
 | --- | ---: | ---: |
-| React Email — HTML | 2,161 | 0.000463 |
-| Preact Email — HTML | 4,631 | 0.000216 |
-| React Email — HTML + text | 702 | 0.001424 |
-| Preact Email — HTML + text | 1,965 | 0.000509 |
+| React Email — HTML | 2,463 | 0.000406 |
+| Preact Email — HTML | 4,924 | 0.000203 |
+| React Email — HTML + text | 776 | 0.001289 |
+| Preact Email — HTML + text | 2,002 | 0.000499 |
 
 2026-10-25 · Node v24.22.1 · 16 logical cores · production mode.
 26 fixtures (all); median of 5 × 1,000 renders after warmup. Compilation excluded; HTML and text parity checked before timing. Results vary by workload.

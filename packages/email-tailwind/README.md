@@ -3,7 +3,7 @@
 Tailwind CSS for Preact emails. Requires async rendering.
 
 ```sh
-pnpm add @tallystone/preact-email-tailwind @tallystone/preact-email preact@10
+pnpm add @tallystone/preact-email-tailwind @tallystone/preact-email preact
 ```
 
 ```tsx

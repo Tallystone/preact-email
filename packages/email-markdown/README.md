@@ -3,7 +3,7 @@
 Markdown for Preact emails, powered by marked.
 
 ```sh
-pnpm add @tallystone/preact-email-markdown preact@10
+pnpm add @tallystone/preact-email-markdown preact
 ```
 
 ```tsx

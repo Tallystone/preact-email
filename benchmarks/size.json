@@ -1,15 +1,15 @@
 [
   {
     "variant": "preact HTML",
-    "bytes": 38275,
-    "gzipBytes": 14166,
+    "bytes": 24399,
+    "gzipBytes": 9907,
     "bundledModules": 47
   },
   {
     "variant": "preact HTML + text",
-    "bytes": 189649,
-    "gzipBytes": 63556,
-    "bundledModules": 81
+    "bytes": 220678,
+    "gzipBytes": 84585,
+    "bundledModules": 87
   },
   {
     "variant": "upstream HTML",

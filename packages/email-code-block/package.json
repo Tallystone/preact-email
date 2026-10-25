@@ -23,8 +23,8 @@
     "preact": "catalog:"
   },
   "dependencies": {
-    "prismjs": "^1.30.0",
-    "@types/prismjs": "^1.26.0"
+    "@types/prismjs": "^1.26.6",
+    "prismjs": "^1.30.0"
   },
   "license": "MIT",
   "description": "code-block component for Preact email",

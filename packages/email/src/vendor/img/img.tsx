@@ -2,25 +2,17 @@
 import * as React from 'preact/compat';
 import { markAsElement } from '../element-marker.js';
 
-export type ImgProps = Readonly<Omit<React.ComponentPropsWithoutRef<'img'>, 'style'> & { style?: React.CSSProperties }>;
+export type ImgProps = Readonly<Omit<React.ImgHTMLAttributes<HTMLImageElement>, 'style'> & { style?: React.CSSProperties }>;
 
 export const Img = React.forwardRef<HTMLImageElement, ImgProps>(
   ({ alt, src, width, height, style, ...props }, ref) => (
-    <img
-      {...props}
-      alt={alt ?? ''}
-      height={height}
-      ref={ref}
-      src={src}
-      style={{
+    <img {...{ ...props, alt: alt ?? '', height, ref, src, style: {
         display: 'block',
         outline: 'none',
         border: 'none',
         textDecoration: 'none',
         ...style,
-      }}
-      width={width}
-    />
+      }, width } as React.ComponentProps<'img'>} />
   ),
 );
 

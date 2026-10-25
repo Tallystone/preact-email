@@ -74,6 +74,19 @@ async function copy(relative: string): Promise<void> {
     /React.ComponentPropsWithoutRef<('[^']+')>/g,
     "Omit<React.ComponentPropsWithoutRef<$1>, 'style'> & { style?: React.CSSProperties }",
   );
+  // Preact 11's compat prop helpers flatten intrinsic accessibility unions.
+  if (relative === "img/img.tsx") {
+    output = output.replace("React.ComponentPropsWithoutRef<'img'>", "React.ImgHTMLAttributes<HTMLImageElement>");
+    // Assert the final intrinsic props together: Img supplies its own alt fallback,
+    // while Preact's accessibility union cannot express all upstream role combinations.
+    output = output.replace(
+      "<img\n      {...props}\n      alt={alt ?? ''}\n      height={height}\n      ref={ref}\n      src={src}\n      style={{",
+      "<img {...{ ...props, alt: alt ?? '', height, ref, src, style: {",
+    ).replace("      }}\n      width={width}\n    />", "      }, width } as React.ComponentProps<'img'>} />");
+  }
+  if (relative === "link/link.tsx" || relative === "button/button.tsx") {
+    output = output.replace("{...props}", "{...(props as React.ComponentProps<'a'>)}");
+  }
   output = output.replace(
     "React.HtmlHTMLAttributes<HTMLBodyElement>",
     "Omit<React.HTMLAttributes<HTMLBodyElement>, 'style'> & { style?: React.CSSProperties }",
@@ -115,6 +128,10 @@ async function copy(relative: string): Promise<void> {
         "element is React.ReactElement<unknown, React.FC<unknown>>",
         "boolean",
       );
+  }
+  // css-tree 3.x types now include these nodes; upstream's 2.x shim conflicts.
+  if (relative === "tailwind/utils/css/downlevel-for-email-clients.ts") {
+    output = output.replace(/\/\*\*\n \* css-tree 3\.x introduced[\s\S]*?declare module 'css-tree' \{[\s\S]*?\n\}\n/, "");
   }
   output = output.replace(
     "enter(originalNode, item)",
@@ -160,6 +177,8 @@ const patches = [
   "narrow CSS property keys to strings",
   "Preact VNode type guards and component predicate types",
   "explicit css-tree visitor parameter types",
+  "remove obsolete css-tree 2.x query node augmentation",
+  "adapt image and anchor props to Preact 11 intrinsic types",
   "guarded regex capture non-null assertion",
 ];
 async function manifest(packageDir: string, included: string[], marker: boolean) {

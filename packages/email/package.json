@@ -29,9 +29,9 @@
     "build": "tsc -p tsconfig.json"
   },
   "dependencies": {
+    "html-to-text": "10.0.1",
     "preact": "catalog:",
-    "preact-render-to-string": "^6.8.1",
-    "html-to-text": "9.0.5"
+    "preact-render-to-string": "^6.8.1"
   },
   "description": "Lightweight Preact email components and rendering, vendored from React Email",
   "license": "MIT",

@@ -7,7 +7,7 @@ export type LinkProps = Readonly<Omit<React.ComponentPropsWithoutRef<'a'>, 'styl
 export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
   ({ target = '_blank', style, ...props }, ref) => (
     <a
-      {...props}
+      {...(props as React.ComponentProps<'a'>)}
       ref={ref}
       style={{
         color: '#067df7',

@@ -29,47 +29,6 @@ import {
 } from 'css-tree';
 import { NON_INLINABLE_ATRULES } from './constants.js';
 
-/**
- * css-tree 3.x introduced new AST node types for query-related at-rules that
- * `@types/css-tree` (still on 2.x at the time of writing) doesn't expose.
- * Augmenting the module here lets the rest of this file work with strong
- * types instead of scattering `as` casts everywhere.
- *
- * - `FeatureRange` is what the parser emits for Media Queries Level 4 range
- *   syntax: `(width >= 40rem)`.
- * - `Feature` is the legacy form (`(min-width: 40rem)`) we construct as the
- *   downleveled output.
- *
- * Note: we cannot extend the `CssNode` union itself (it's a `type` alias, not
- * an interface), so two narrow casts remain in this file:
- *   1. Widening `node` inside `walk()` so we can narrow against
- *      `FeatureRange.type` (`CssNode` doesn't list `'FeatureRange'`).
- *   2. Assigning a constructed `Feature` back to `ListItem<CssNode>.data`.
- *
- * Both are flagged inline and reference back to this block.
- *
- * See:
- *   https://github.com/csstree/csstree/blob/master/lib/syntax/node/FeatureRange.js
- *   https://github.com/csstree/csstree/blob/master/lib/syntax/node/Feature.js
- */
-declare module 'css-tree' {
-  interface FeatureRange extends CssNodeCommon {
-    type: 'FeatureRange';
-    kind: string;
-    left: CssNode;
-    leftComparison: string;
-    middle: CssNode;
-    rightComparison: string | null;
-    right: CssNode | null;
-  }
-
-  interface Feature extends CssNodeCommon {
-    type: 'Feature';
-    kind: string;
-    name: string;
-    value: CssNode | null;
-  }
-}
 
 /**
  * Unnest @media at-rules from inside regular rules, and downlevel

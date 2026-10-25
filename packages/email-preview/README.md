@@ -3,7 +3,7 @@
 Lightweight Preact email previews with folder navigation, live reload, responsive sizing and dark-mode approximations. Renders in memory. Requires Node 22.18+.
 
 ```sh
-pnpm add @tallystone/preact-email preact@10
+pnpm add @tallystone/preact-email preact
 pnpm add -D @tallystone/preact-email-preview
 pnpm exec preact-email-preview --dir ./emails
 ```

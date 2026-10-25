@@ -3,7 +3,7 @@
 Syntax highlighting for Preact emails, powered by Prism.
 
 ```sh
-pnpm add @tallystone/preact-email-code-block preact@10
+pnpm add @tallystone/preact-email-code-block preact
 ```
 
 ```tsx

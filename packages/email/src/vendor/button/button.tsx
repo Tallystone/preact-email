@@ -56,7 +56,7 @@ export const Button = React.forwardRef<HTMLAnchorElement, ButtonProps>(
 
     return (
       <a
-        {...props}
+        {...(props as React.ComponentProps<'a'>)}
         ref={ref}
         style={{
           lineHeight: '100%',

@@ -6,6 +6,6 @@ minimumReleaseAgeStrict: true
 allowBuilds:
   esbuild: true
 catalog:
-  preact: ^10.29.8
+  preact: ^11.0.1
   esbuild: ^0.28.2
   htmlparser2: ^12.0.0

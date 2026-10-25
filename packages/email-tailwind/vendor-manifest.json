@@ -12,6 +12,8 @@
     "narrow CSS property keys to strings",
     "Preact VNode type guards and component predicate types",
     "explicit css-tree visitor parameter types",
+    "remove obsolete css-tree 2.x query node augmentation",
+    "adapt image and anchor props to Preact 11 intrinsic types",
     "guarded regex capture non-null assertion"
   ],
   "sha256": {
