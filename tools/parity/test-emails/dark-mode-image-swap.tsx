@@ -93,7 +93,7 @@ export default function ImageSwap({
     </DarkLayout>
   );
 }
-export const scenarios = [
+ImageSwap.Scenarios = [
   {
     name: 'apple-css-only',
     htmlContains: [
@@ -133,5 +133,5 @@ export const scenarios = [
   htmlContains?: string[];
   htmlExcludes?: string[];
 }>;
-ImageSwap.PreviewProps = scenarios[0]!.props;
+ImageSwap.PreviewProps = ImageSwap.Scenarios[0]!.props;
 ImageSwap.Subject = ({ edition }: ImageSwapProps) => `Field notes · ${edition}`;

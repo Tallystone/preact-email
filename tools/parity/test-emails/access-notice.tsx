@@ -78,7 +78,7 @@ export default function AccessNotice({
     </EmailShell>
   );
 }
-export const scenarios = [
+AccessNotice.Scenarios = [
   {
     name: 'unrecognised-with-rich-html',
     props: {
@@ -117,4 +117,4 @@ export const scenarios = [
 }>;
 
 // Change the scenario index to preview another fixture variant.
-AccessNotice.PreviewProps = scenarios[0]!.props;
+AccessNotice.PreviewProps = AccessNotice.Scenarios[0]!.props;

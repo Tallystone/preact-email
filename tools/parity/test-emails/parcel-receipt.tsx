@@ -124,7 +124,7 @@ export default function ParcelReceipt({
     </EmailShell>
   );
 }
-export const scenarios = [
+ParcelReceipt.Scenarios = [
   {
     name: 'dispatched-multiple-items',
     props: {
@@ -160,4 +160,4 @@ export const scenarios = [
 }>;
 
 // Change the scenario index to preview another fixture variant.
-ParcelReceipt.PreviewProps = scenarios[0]!.props;
+ParcelReceipt.PreviewProps = ParcelReceipt.Scenarios[0]!.props;

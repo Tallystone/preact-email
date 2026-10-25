@@ -1,22 +1,18 @@
+import { z } from 'zod';
 import { Column, Heading, Row, Section, Text } from '@tallystone/preact-email';
 import { ActionPanel, EmailShell, Facts, styles } from './components/layout.js';
 
-export interface CartItem {
-  sku: string;
-  name: string;
-  variant?: string;
-  quantity: number;
-  unitPriceCents: number;
-}
-export interface CheckoutCompleteProps {
-  recipient: string;
-  orderId: string;
-  cart: CartItem[];
-  shippingCents: number;
-  taxCents: number;
-  discountCents: number;
-  deliveryAddress?: string[];
-}
+const CartItemSchema = z.object({
+  sku: z.string(), name: z.string(), variant: z.string().optional(),
+  quantity: z.number().int().positive(), unitPriceCents: z.number().int().nonnegative(),
+});
+const PropsSchema = z.object({
+  recipient: z.string(), orderId: z.string(), cart: z.array(CartItemSchema),
+  shippingCents: z.number().int().nonnegative(), taxCents: z.number().int().nonnegative(),
+  discountCents: z.number().int().nonnegative(), deliveryAddress: z.array(z.string()).optional(),
+});
+export type CartItem = z.infer<typeof CartItemSchema>;
+export type CheckoutCompleteProps = z.infer<typeof PropsSchema>;
 const money = (cents: number) => `$${(cents / 100).toFixed(2)}`;
 
 function CartLine({ item }: { item: CartItem }) {
@@ -124,7 +120,7 @@ export default function CheckoutComplete({
     </EmailShell>
   );
 }
-export const scenarios = [
+CheckoutComplete.Scenarios = [
   {
     name: 'mixed-cart-with-discount',
     props: {
@@ -233,7 +229,9 @@ export const scenarios = [
   contains: string[];
   excludes: string[];
 }>;
-CheckoutComplete.PreviewProps = scenarios[0]!.props;
+CheckoutComplete.PreviewProps = CheckoutComplete.Scenarios[0]!.props;
 
 CheckoutComplete.Subject = ({ orderId }: CheckoutCompleteProps) =>
   `Order ${orderId} — checkout complete`;
+
+CheckoutComplete.Schema = PropsSchema;

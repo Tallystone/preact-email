@@ -1,0 +1,42 @@
+{
+  "name": "@tallystone/preact-email-registry",
+  "version": "0.1.0",
+  "description": "Typed email render functions with optional Zod validation",
+  "type": "module",
+  "license": "MIT",
+  "files": [
+    "dist",
+    "LICENSE"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "peerDependencies": {
+    "@tallystone/preact-email": "^0.1.0",
+    "preact": "catalog:"
+  },
+  "devDependencies": {
+    "@tallystone/preact-email": "workspace:*",
+    "preact": "catalog:"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tallystone/preact-email.git",
+    "directory": "packages/email-registry"
+  },
+  "bin": {
+    "preact-email-registry": "./dist/cli.js"
+  },
+  "dependencies": {
+    "esbuild": "catalog:"
+  }
+}

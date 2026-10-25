@@ -76,7 +76,15 @@ async function copy(relative: string): Promise<void> {
   );
   // Preact 11's compat prop helpers flatten intrinsic accessibility unions.
   if (relative === "img/img.tsx") {
-    output = output.replace("React.ComponentPropsWithoutRef<'img'>", "React.ImgHTMLAttributes<HTMLImageElement>");
+    output = output.replace(
+      "Omit<React.ComponentPropsWithoutRef<'img'>, 'style'> & { style?: React.CSSProperties }",
+      "WithEmailStyle<React.ImgHTMLAttributes<HTMLImageElement>>",
+    );
+    output = "type WithEmailStyle<Props> = Props extends unknown ? Omit<Props, 'style'> & { style?: React.CSSProperties } : never;\n" + output;
+    output = output.replace(
+      "export const Img = React.forwardRef",
+      "export const Img: React.FunctionComponent<ImgProps & React.RefAttributes<HTMLImageElement>> = React.forwardRef",
+    );
     // Assert the final intrinsic props together: Img supplies its own alt fallback,
     // while Preact's accessibility union cannot express all upstream role combinations.
     output = output.replace(

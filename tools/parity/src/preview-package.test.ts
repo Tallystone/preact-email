@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { mkdtemp, mkdir, writeFile, symlink, rm } from 'node:fs/promises';
+import { mkdtemp, mkdir, readFile, writeFile, symlink, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { createRequire } from 'node:module';
@@ -16,11 +16,19 @@ test('preview package works from an independent consumer project', async t => {
   const cwd = await mkdtemp(join(tmpdir(), 'email-preview-consumer-'));
   let preview: Awaited<ReturnType<typeof startPreview>> | undefined;
   try {
-    for (const dir of ['node_modules/@tallystone', 'emails/auth', 'emails/orders', 'emails/components', 'emails/static', 'emails/empty/nested', 'shared']) {
+    for (const dir of ['node_modules/@tallystone', 'node_modules/esm-probe', 'emails/auth', 'emails/orders', 'emails/components', 'emails/static', 'emails/empty/nested', 'shared']) {
       await mkdir(join(cwd, dir), { recursive: true });
     }
     await symlink(join(repo, 'packages/email'), join(cwd, 'node_modules/@tallystone/preact-email'), 'dir');
     await symlink(dirname(require.resolve('preact/package.json')), join(cwd, 'node_modules/preact'), 'dir');
+    await symlink(dirname(require.resolve('zod/package.json')), join(cwd, 'node_modules/zod'), 'dir');
+    await writeFile(join(cwd, 'node_modules/esm-probe/package.json'), '{"type":"module","exports":"./index.js"}');
+    await writeFile(join(cwd, 'node_modules/esm-probe/data.json'), '{"value":"native-esm"}');
+    await writeFile(join(cwd, 'node_modules/esm-probe/index.js'), `
+      import { createRequire } from 'node:module';
+      const require = createRequire(import.meta.url);
+      export const value = await Promise.resolve(require('./data.json').value);
+    `);
     await writeFile(join(cwd, 'package.json'), '{"name":"consumer","type":"module"}');
     // A React app's JSX configuration and TS path aliases must not break Preact emails.
     await writeFile(join(cwd, 'tsconfig.json'), JSON.stringify({ compilerOptions: {
@@ -30,10 +38,14 @@ test('preview package works from an independent consumer project', async t => {
     await writeFile(join(cwd, 'emails/auth/welcome.tsx'), `
       import { Html, Body, Preview, Text } from '@tallystone/preact-email';
       import { greeting } from '@project/copy';
+      import { value } from 'esm-probe';
+      import { z } from 'zod';
+      if (value !== 'native-esm') throw new Error('Native ESM dependency failed');
       export default function Welcome({name}) {
         return <Html><Body><Preview useTitleTag={false}>Inbox &amp; preview</Preview><Text>{greeting}, {name}!</Text></Body></Html>;
       }
-      Welcome.PreviewProps = {name: 'Robin'};
+      Welcome.PreviewProps = {name: ' Robin '};
+      Welcome.Schema = z.object({name:z.string().trim().min(1)});
       Welcome.Subject = ({name}) => 'Hello ' + name;
     `);
     await writeFile(join(cwd, 'emails/orders/receipt.tsx'), `
@@ -103,6 +115,14 @@ test('preview package works from an independent consumer project', async t => {
       }
       assert(ids.includes('empty/nested/new-folder/new--preview'));
       await preview.close(); preview = undefined;
+    });
+    await t.test('invalid schema input is displayed as an email error', async () => {
+      const file = join(cwd, 'emails/auth/welcome.tsx');
+      await writeFile(file, (await readFile(file, 'utf8')).replace("{name: ' Robin '}", "{name: 42}"));
+      const { emails } = await renderTemplates(dir, cwd);
+      const welcome = emails.find(email => email.template === 'auth/welcome')!;
+      assert(welcome.error?.includes('string'));
+      assert.equal(welcome.html, '');
     });
   } finally {
     await preview?.close();

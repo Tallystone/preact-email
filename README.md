@@ -33,6 +33,7 @@ Optional packages install separately:
 | [preact-email-markdown](packages/email-markdown/README.md) | Markdown |
 | [preact-email-code-block](packages/email-code-block/README.md) | Syntax highlighting |
 | [preact-email-tailwind](packages/email-tailwind/README.md) | Tailwind CSS |
+| [preact-email-registry](packages/email-registry/README.md) | Typed render registry and optional Zod validation |
 | [preact-email-preview](packages/email-preview/README.md) | Local previews with live reload |
 
 All packages use the `@tallystone` scope.
@@ -70,4 +71,4 @@ pnpm check
 pnpm preview
 ```
 
-The **Update vendored React Email** GitHub workflow opens a tested update PR from an upstream version and commit. Push `vX.Y.Z` to publish all five packages at that version with npm provenance. Configure npm trusted publishing for `Tallystone/preact-email`, workflow `publish.yml`, environment `npm`.
+The **Update vendored React Email** GitHub workflow opens a tested update PR from an upstream version and commit. Push `vX.Y.Z` to publish all packages at that version with npm provenance. Configure npm trusted publishing for `Tallystone/preact-email`, workflow `publish.yml`, environment `npm`.

@@ -8,6 +8,7 @@ import {
 } from 'react-email';
 import {
   render,
+  renderAsync,
   renderEmail,
   toPlainText,
 } from '../../../packages/email/dist/index.js';
@@ -50,11 +51,11 @@ try {
       const text = upstreamText(html);
       assert.equal(htmlToTextBaseline(html), text);
       assert.equal(toPlainText(html), text);
-      const local = render(f.preact());
+      const local = f.asyncOnly ? await renderAsync(f.preact()) : render(f.preact());
       assert.deepEqual(normalizeHtml(local), normalizeHtml(html));
       assert.equal(htmlToTextBaseline(local), text);
       assert.equal(toPlainText(local), text);
-      assert.equal(renderEmail(f.preact()).text, text);
+      assert.equal(f.asyncOnly ? toPlainText(local) : renderEmail(f.preact()).text, text);
       return { ...f, html, text };
     }),
   );
@@ -69,7 +70,7 @@ try {
       name: 'upstream HTML',
       run: async (i) => (await upstreamRender(at(i).react())).length,
     },
-    { name: 'preact HTML', run: (i) => render(at(i).preact()).length },
+    { name: 'preact HTML', run: (i) => at(i).asyncOnly ? renderAsync(at(i).preact()).then(html => html.length) : render(at(i).preact()).length },
     {
       name: 'upstream HTML + text',
       run: async (i) => {
@@ -80,8 +81,8 @@ try {
     {
       name: 'preact HTML + upstream html-to-text',
       run: (i) => {
-        const html = render(at(i).preact());
-        return html.length + htmlToTextBaseline(html).length;
+        const convert = (html: string) => html.length + htmlToTextBaseline(html).length;
+        return at(i).asyncOnly ? renderAsync(at(i).preact()).then(convert) : convert(render(at(i).preact()));
       },
     },
     {
@@ -94,6 +95,7 @@ try {
     {
       name: 'preact HTML + compiled html-to-text',
       run: (i) => {
+        if (at(i).asyncOnly) return renderAsync(at(i).preact()).then(html => html.length + toPlainText(html).length);
         const result = renderEmail(at(i).preact());
         return result.html.length + result.text.length;
       },

@@ -58,7 +58,7 @@ export default function LightOnly({
     </DarkLayout>
   );
 }
-export const scenarios = [
+LightOnly.Scenarios = [
   {
     name: 'light-only-opt-out',
     htmlContains: ['content="light only"'],
@@ -82,5 +82,5 @@ export const scenarios = [
   htmlContains?: string[];
   htmlExcludes?: string[];
 }>;
-LightOnly.PreviewProps = scenarios[0]!.props;
+LightOnly.PreviewProps = LightOnly.Scenarios[0]!.props;
 LightOnly.Subject = () => 'A community credit, with our thanks';

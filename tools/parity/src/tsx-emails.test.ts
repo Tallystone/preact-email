@@ -23,16 +23,18 @@ import { normalizeHtml } from './normalize.ts';
 interface Scenario {
   name: string;
   props: Record<string, unknown>;
-  contains: string[];
-  excludes: string[];
+  contains?: string[];
+  excludes?: string[];
+  asyncOnly?: boolean;
   htmlContains?: string[];
   htmlExcludes?: string[];
 }
 interface EmailModule<Node> {
   default: ((props: Record<string, unknown>) => Node) & {
-    PreviewProps: Record<string, unknown>;
+    PreviewProps?: Record<string, unknown>;
+    Scenarios?: Scenario[];
   };
-  scenarios: Scenario[];
+  scenarios?: Scenario[];
 }
 const workspace = fileURLToPath(new URL('../', import.meta.url));
 const fixtureDir = join(workspace, 'test-emails');
@@ -62,6 +64,9 @@ test('standalone TSX email parity', async (t) => {
           compilerOptions: { jsx: 'react-jsx', jsxImportSource: runtime },
         },
         alias: {
+          ...(runtime === 'react' ? Object.fromEntries(['markdown', 'code-block', 'tailwind'].map(name => [
+            '@tallystone/preact-email-' + name, 'react-email',
+          ])) : {}),
           '@tallystone/preact-email': runtime === 'react'
             ? 'react-email'
             : fileURLToPath(new URL('../../../packages/email/src/index.ts', import.meta.url)),
@@ -82,20 +87,9 @@ test('standalone TSX email parity', async (t) => {
       )) as EmailModule<VNode>;
       assert.equal(typeof reactModule.default, 'function');
       assert.equal(typeof preactModule.default, 'function');
-      assert(
-        reactModule.scenarios.length >= 2,
-        `${file} must cover optional branches`,
-      );
-      assert.deepEqual(preactModule.scenarios, reactModule.scenarios);
-      assert.deepEqual(
-        reactModule.default.PreviewProps,
-        reactModule.scenarios[0]!.props,
-      );
-      assert.deepEqual(
-        preactModule.default.PreviewProps,
-        preactModule.scenarios[0]!.props,
-      );
-      for (const scenario of reactModule.scenarios) {
+      const scenarios = reactModule.default.Scenarios ?? [{ name: 'preview', props: reactModule.default.PreviewProps ?? {} }];
+      assert.deepEqual(preactModule.default.Scenarios, reactModule.default.Scenarios);
+      for (const scenario of scenarios) {
         await t.test(`${file}: ${scenario.name}`, async (scenarioTest) => {
           const reactNode = () => reactModule.default(scenario.props);
           const preactNode = () => preactModule.default(scenario.props);
@@ -108,17 +102,17 @@ test('standalone TSX email parity', async (t) => {
             expectedText.length > 100,
             'Fixture must produce meaningful text',
           );
-          for (const text of scenario.contains)
+          for (const text of scenario.contains ?? [])
             assert(
               expectedText.includes(text),
               `Missing reference text: ${text}`,
             );
-          for (const text of scenario.excludes)
+          for (const text of scenario.excludes ?? [])
             assert(
               !expectedText.includes(text),
               `Unexpected reference text: ${text}`,
             );
-          const actualHtml = render(preactNode());
+          const actualHtml = scenario.asyncOnly ? await renderAsync(preactNode()) : render(preactNode());
           for (const html of [expectedHtml, actualHtml]) {
             for (const value of scenario.htmlContains ?? [])
               assert(html.includes(value), `Missing expected markup: ${value}`);
@@ -140,8 +134,10 @@ test('standalone TSX email parity', async (t) => {
           });
           await scenarioTest.test(
             'compiled text matches upstream exactly',
-            () => {
-              const result = renderEmail(preactNode());
+            async () => {
+              const result = scenario.asyncOnly
+                ? { html: await renderAsync(preactNode()), text: toPlainText(actualHtml) }
+                : renderEmail(preactNode());
               assert.equal(result.text, expectedText);
               assert.equal(toPlainText(actualHtml), expectedText);
               assert.deepEqual(

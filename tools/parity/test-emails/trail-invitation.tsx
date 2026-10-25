@@ -100,7 +100,7 @@ export default function TrailInvitation({
     </EmailShell>
   );
 }
-export const scenarios = [
+TrailInvitation.Scenarios = [
   {
     name: 'all-sections',
     props: {
@@ -144,4 +144,4 @@ export const scenarios = [
 }>;
 
 // Change the scenario index to preview another fixture variant.
-TrailInvitation.PreviewProps = scenarios[0]!.props;
+TrailInvitation.PreviewProps = TrailInvitation.Scenarios[0]!.props;

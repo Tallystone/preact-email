@@ -78,7 +78,7 @@ export default function AuthoredDark({
     </DarkLayout>
   );
 }
-export const scenarios = [
+AuthoredDark.Scenarios = [
   {
     name: 'invitation',
     htmlContains: [
@@ -108,6 +108,6 @@ export const scenarios = [
   htmlContains?: string[];
   htmlExcludes?: string[];
 }>;
-AuthoredDark.PreviewProps = scenarios[0]!.props;
+AuthoredDark.PreviewProps = AuthoredDark.Scenarios[0]!.props;
 AuthoredDark.Subject = ({ confirmed }: AuthoredDarkProps) =>
   confirmed ? 'Your sky sketching reservation' : 'An evening of sky sketching';

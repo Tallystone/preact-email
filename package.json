@@ -14,16 +14,21 @@
     "preview": "pnpm build && node packages/email-preview/dist/cli.js --dir tools/parity/test-emails"
   },
   "devDependencies": {
+    "@tallystone/preact-email": "workspace:*",
+    "@tallystone/preact-email-code-block": "workspace:*",
+    "@tallystone/preact-email-markdown": "workspace:*",
+    "@tallystone/preact-email-registry": "workspace:*",
+    "@tallystone/preact-email-tailwind": "workspace:*",
     "@types/html-to-text": "9.0.4",
     "@types/node": "^26.6.5",
     "@types/react": "^19.3.0",
     "esbuild": "catalog:",
+    "preact": "catalog:",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
     "react-email": "6.11.3",
     "typescript": "^7.0.2",
-    "@tallystone/preact-email": "workspace:*",
-    "preact": "catalog:"
+    "zod": "^4.6.7"
   },
   "engines": {
     "node": ">=22.18.0"

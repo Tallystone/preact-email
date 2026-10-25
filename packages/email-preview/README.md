@@ -22,13 +22,15 @@ Welcome.PreviewProps = { name: 'Robin' };
 Welcome.Subject = ({ name }: { name: string }) => `Welcome, ${name}`;
 ```
 
-For multiple previews, export scenarios instead of `PreviewProps`:
+For multiple previews, attach `.Scenarios` (takes precedence over `.PreviewProps`):
 
 ```tsx
-export const scenarios = [
+Welcome.Scenarios = [
   { name: 'New customer', props: { name: 'Robin' } },
   { name: 'Returning customer', props: { name: 'Alex' } },
 ];
 ```
 
 Nested folders appear in the sidebar. Put shared components in `components/` or prefix their names with `_`. Test files are excluded. Put images in `emails/static/` and reference `/static/logo.png`; use `--static-dir` for another asset directory.
+
+`.Subject`, `.PreviewProps`, and `.Scenarios` are optional. An optional `.Schema` Zod validator parses props before previewing. For a typed render registry, use [preact-email-registry](../email-registry/README.md).

@@ -10,10 +10,13 @@ export interface BenchmarkFixture {
   name: string;
   react: () => ReactElement;
   preact: () => VNode;
+  asyncOnly?: boolean;
 }
 interface EmailModule<T> {
-  default: (props: Record<string, unknown>) => T;
-  scenarios: { name: string; props: Record<string, unknown> }[];
+  default: ((props: Record<string, unknown>) => T) & {
+    PreviewProps?: Record<string, unknown>;
+    Scenarios?: { name: string; props: Record<string, unknown>; asyncOnly?: boolean }[];
+  };
 }
 
 /** Compile before timing; both runtimes use exactly the same TSX and props. */
@@ -45,6 +48,9 @@ export async function loadTsxBenchmarkFixtures(): Promise<{
           compilerOptions: { jsx: 'react-jsx', jsxImportSource: runtime },
         },
         alias: {
+          ...(runtime === 'react' ? Object.fromEntries(['markdown', 'code-block', 'tailwind'].map(name => [
+            '@tallystone/preact-email-' + name, 'react-email',
+          ])) : {}),
           '@tallystone/preact-email':
             runtime === 'react'
               ? 'react-email'
@@ -68,10 +74,11 @@ export async function loadTsxBenchmarkFixtures(): Promise<{
       const preact = (await import(
         pathToFileURL(join(output, 'preact', name)).href
       )) as EmailModule<VNode>;
-      assert.deepEqual(preact.scenarios, react.scenarios);
-      for (const scenario of react.scenarios)
+      assert.deepEqual(preact.default.Scenarios, react.default.Scenarios);
+      for (const scenario of react.default.Scenarios ?? [{ name: 'preview', props: react.default.PreviewProps ?? {} }])
         fixtures.push({
           name: `${file}/${scenario.name}`,
+          asyncOnly: scenario.asyncOnly,
           react: () => react.default(scenario.props),
           preact: () => preact.default(scenario.props),
         });

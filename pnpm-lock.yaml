@@ -181,6 +181,18 @@ importers:
       '@tallystone/preact-email':
         specifier: workspace:*
         version: link:packages/email
+      '@tallystone/preact-email-code-block':
+        specifier: workspace:*
+        version: link:packages/email-code-block
+      '@tallystone/preact-email-markdown':
+        specifier: workspace:*
+        version: link:packages/email-markdown
+      '@tallystone/preact-email-registry':
+        specifier: workspace:*
+        version: link:packages/email-registry
+      '@tallystone/preact-email-tailwind':
+        specifier: workspace:*
+        version: link:packages/email-tailwind
       '@types/html-to-text':
         specifier: 9.0.4
         version: 9.0.4
@@ -208,6 +220,9 @@ importers:
       typescript:
         specifier: ^7.0.2
         version: 7.0.2
+      zod:
+        specifier: ^4.6.7
+        version: 4.6.7
 
   packages/email:
     dependencies:
@@ -252,6 +267,19 @@ importers:
       htmlparser2:
         specifier: 'catalog:'
         version: 12.0.0
+    devDependencies:
+      '@tallystone/preact-email':
+        specifier: workspace:*
+        version: link:../email
+      preact:
+        specifier: 'catalog:'
+        version: 11.0.1(preact-render-to-string@6.8.1)
+
+  packages/email-registry:
+    dependencies:
+      esbuild:
+        specifier: 'catalog:'
+        version: 0.28.2
     devDependencies:
       '@tallystone/preact-email':
         specifier: workspace:*
@@ -1116,6 +1144,9 @@ packages:
     resolution: {integrity: sha512-xYqdZFUK/VYazNl/oCDYN+3WloWQwMfZxBoiNt6qNyk+xfOdi598muWE42rNZFp1kNOiqW936q5RhUdnpqElSg==}
     engines: {node: '>=18'}
 
+  zod@4.6.7:
+    resolution: {integrity: sha512-g8W2D2kU6a8untc053fX1uVBKzM7yqAxW/3zwk83+6RyF2+SKOuV+c0wBDhUwzV1PaGapmZH+rmcUzPf+3CGwg==}
+
 snapshots:
 
   '@babel/code-frame@7.29.7':
@@ -1840,3 +1871,5 @@ snapshots:
   ws@8.21.3: {}
 
   yoctocolors@2.2.0: {}
+
+  zod@4.6.7: {}

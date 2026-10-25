@@ -12,7 +12,7 @@ const usage = `Usage: preact-email-preview [directory] [options]
 
 Finds .tsx emails recursively. Skips components, static, assets, tests,
 and directories starting with "." or "_". Each email exports a default
-component with PreviewProps, or a named scenarios array.
+component with optional .PreviewProps, .Scenarios, .Subject and .Schema.
 `;
 async function main() {
   const args = process.argv.slice(2).filter(arg => arg !== '--');

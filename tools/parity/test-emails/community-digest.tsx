@@ -107,7 +107,7 @@ export default function CommunityDigest({
     </EmailShell>
   );
 }
-export const scenarios = [
+CommunityDigest.Scenarios = [
   {
     name: 'editorial',
     props: { recipient: 'Noor', storyCount: 4, showEditorNote: true },
@@ -141,4 +141,4 @@ export const scenarios = [
 }>;
 
 // Change the scenario index to preview another fixture variant.
-CommunityDigest.PreviewProps = scenarios[0]!.props;
+CommunityDigest.PreviewProps = CommunityDigest.Scenarios[0]!.props;
