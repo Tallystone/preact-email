@@ -10,7 +10,7 @@ import {
 } from '@tallystone/preact-email';
 import { ActionPanel, EmailShell, styles } from './components/layout.js';
 
-export interface CommunityDigestProps {
+interface CommunityDigestProps {
   recipient?: string;
   storyCount: number;
   showEditorNote: boolean;
@@ -136,5 +136,3 @@ CommunityDigest.Scenarios = [
   },
 ] satisfies TestScenarios<CommunityDigestProps>;
 
-// Change the scenario index to preview another fixture variant.
-CommunityDigest.PreviewProps = CommunityDigest.Scenarios[0]!.props;

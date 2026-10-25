@@ -7,7 +7,7 @@ interface Item {
   quantity: number;
   priceCents: number;
 }
-export interface ParcelReceiptProps {
+interface ParcelReceiptProps {
   recipient: string;
   order: string;
   items: Item[];
@@ -155,5 +155,3 @@ ParcelReceipt.Scenarios = [
   },
 ] satisfies TestScenarios<ParcelReceiptProps>;
 
-// Change the scenario index to preview another fixture variant.
-ParcelReceipt.PreviewProps = ParcelReceipt.Scenarios[0]!.props;

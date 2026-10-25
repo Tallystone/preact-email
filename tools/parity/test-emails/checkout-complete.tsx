@@ -12,8 +12,8 @@ const PropsSchema = z.object({
   shippingCents: z.number().int().nonnegative(), taxCents: z.number().int().nonnegative(),
   discountCents: z.number().int().nonnegative(), deliveryAddress: z.array(z.string()).optional(),
 });
-export type CartItem = z.infer<typeof CartItemSchema>;
-export type CheckoutCompleteProps = z.infer<typeof PropsSchema>;
+type CartItem = z.infer<typeof CartItemSchema>;
+type CheckoutCompleteProps = z.infer<typeof PropsSchema>;
 const money = (cents: number) => `$${(cents / 100).toFixed(2)}`;
 
 function CartLine({ item }: { item: CartItem }) {
@@ -225,7 +225,6 @@ CheckoutComplete.Scenarios = [
     excludes: ['DELIVERY ADDRESS', 'Your checkout receipt for'],
   },
 ] satisfies TestScenarios<CheckoutCompleteProps>;
-CheckoutComplete.PreviewProps = CheckoutComplete.Scenarios[0]!.props;
 
 CheckoutComplete.Subject = ({ orderId }: CheckoutCompleteProps) =>
   `Order ${orderId} — checkout complete`;

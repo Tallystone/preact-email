@@ -1,7 +1,7 @@
 import { Button, Heading, Link, Section, Text } from '@tallystone/preact-email';
 import { DarkLayout, darkColors, textStyle } from './components/dark-layout.js';
 
-export interface AuthoredDarkProps {
+interface AuthoredDarkProps {
   recipient: string;
   confirmed: boolean;
 }
@@ -108,6 +108,5 @@ AuthoredDark.Scenarios = [
   htmlContains?: string[];
   htmlExcludes?: string[];
 }>;
-AuthoredDark.PreviewProps = AuthoredDark.Scenarios[0]!.props;
 AuthoredDark.Subject = ({ confirmed }: AuthoredDarkProps) =>
   confirmed ? 'Your sky sketching reservation' : 'An evening of sky sketching';

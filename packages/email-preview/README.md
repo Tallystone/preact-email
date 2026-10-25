@@ -22,7 +22,7 @@ Welcome.PreviewProps = { name: 'Robin' };
 Welcome.Subject = ({ name }: { name: string }) => `Welcome, ${name}`;
 ```
 
-For multiple previews, attach `.Scenarios` (takes precedence over `.PreviewProps`):
+For multiple previews, attach `.Scenarios`. The first is selected by default; `.PreviewProps` is only used when there are no scenarios:
 
 ```tsx
 import type { Scenarios } from '@tallystone/preact-email';

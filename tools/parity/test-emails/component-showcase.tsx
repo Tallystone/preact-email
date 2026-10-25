@@ -20,7 +20,6 @@ export default function ComponentShowcase({ name = 'Robin' }: { name?: string })
     </Container>
   </Body></Html></Tailwind>;
 }
-ComponentShowcase.PreviewProps = { name: 'Robin' };
 ComponentShowcase.Scenarios = [
-  { name: 'developer', props: ComponentShowcase.PreviewProps, asyncOnly: true, contains: ['WELCOME, ROBIN', 'GETTING STARTED'], excludes: [] },
+  { name: 'developer', props: { name: 'Robin' }, asyncOnly: true, contains: ['WELCOME, ROBIN', 'GETTING STARTED'], excludes: [] },
 ];

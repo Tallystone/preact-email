@@ -1,7 +1,7 @@
 import { Button, Heading, Section, Text } from '@tallystone/preact-email';
 import { DarkLayout, textStyle } from './components/dark-layout.js';
 
-export interface LightOnlyProps {
+interface LightOnlyProps {
   recipient: string;
   voucher: string;
   preserveLight: boolean;
@@ -82,5 +82,4 @@ LightOnly.Scenarios = [
   htmlContains?: string[];
   htmlExcludes?: string[];
 }>;
-LightOnly.PreviewProps = LightOnly.Scenarios[0]!.props;
 LightOnly.Subject = () => 'A community credit, with our thanks';

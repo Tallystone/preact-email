@@ -1,7 +1,7 @@
 import { Heading, Img, Link, Section, Text } from '@tallystone/preact-email';
 import { DarkLayout, darkColors, textStyle } from './components/dark-layout.js';
 
-export interface ImageSwapProps {
+interface ImageSwapProps {
   recipient: string;
   edition: string;
   outlookOverrides: boolean;
@@ -133,5 +133,4 @@ ImageSwap.Scenarios = [
   htmlContains?: string[];
   htmlExcludes?: string[];
 }>;
-ImageSwap.PreviewProps = ImageSwap.Scenarios[0]!.props;
 ImageSwap.Subject = ({ edition }: ImageSwapProps) => `Field notes · ${edition}`;

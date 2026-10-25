@@ -2,7 +2,7 @@ import type { TestScenarios } from './components/scenarios.js';
 import { Link, Text } from '@tallystone/preact-email';
 import { ActionPanel, EmailShell, Facts, styles } from './components/layout.js';
 
-export interface TrailInvitationProps {
+interface TrailInvitationProps {
   recipient: string;
   organiser: string;
   trail: string;
@@ -139,5 +139,3 @@ TrailInvitation.Scenarios = [
   },
 ] satisfies TestScenarios<TrailInvitationProps>;
 
-// Change the scenario index to preview another fixture variant.
-TrailInvitation.PreviewProps = TrailInvitation.Scenarios[0]!.props;
