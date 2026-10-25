@@ -1,0 +1,152 @@
+{
+  "date": "2026-10-25T10:33:28.697Z",
+  "node": "v24.18.0",
+  "cpu": "AMD Ryzen 7 5700U with Radeon Graphics",
+  "iterations": 2000,
+  "samples": 5,
+  "fixtures": [
+    "notification",
+    "receipt",
+    "links-entities",
+    "preview-image-skips",
+    "typography",
+    "raw-html",
+    "font-head",
+    "long-email"
+  ],
+  "checksum": 213172994,
+  "results": [
+    {
+      "name": "upstream HTML",
+      "emailsPerSecond": 3339,
+      "medianMsPerEmail": 0.2994847460000001,
+      "sampleMs": [
+        431.7117790000011,
+        527.676875000001,
+        598.9694920000002,
+        606.7910389999997,
+        628.7497089999997
+      ]
+    },
+    {
+      "name": "preact HTML",
+      "emailsPerSecond": 13714,
+      "medianMsPerEmail": 0.0729156210000001,
+      "sampleMs": [
+        143.79204500000196,
+        144.2078359999996,
+        145.8312420000002,
+        160.35797399999865,
+        190.4068769999999
+      ]
+    },
+    {
+      "name": "upstream HTML + text",
+      "emailsPerSecond": 971,
+      "medianMsPerEmail": 1.0297438980000007,
+      "sampleMs": [
+        1918.1119760000001,
+        1930.4522490000018,
+        2059.4877960000013,
+        2125.1531510000004,
+        2462.275749
+      ]
+    },
+    {
+      "name": "preact HTML + upstream html-to-text",
+      "emailsPerSecond": 1550,
+      "medianMsPerEmail": 0.6451541165000017,
+      "sampleMs": [
+        1257.8889909999998,
+        1284.4818940000005,
+        1290.3082330000034,
+        1351.279926000001,
+        1627.5766480000002
+      ]
+    },
+    {
+      "name": "preact HTML + parser",
+      "emailsPerSecond": 5594,
+      "medianMsPerEmail": 0.1787770449999989,
+      "sampleMs": [
+        323.08540099999846,
+        345.95118,
+        357.5540899999978,
+        443.5332390000003,
+        464.8096940000005
+      ]
+    },
+    {
+      "name": "preact HTML + regex",
+      "emailsPerSecond": 5999,
+      "medianMsPerEmail": 0.16668310949999976,
+      "sampleMs": [
+        321.227684999998,
+        327.0769050000017,
+        333.36621899999955,
+        340.4017879999992,
+        386.9384250000003
+      ]
+    },
+    {
+      "name": "preact HTML + tree",
+      "emailsPerSecond": 7226,
+      "medianMsPerEmail": 0.13839533200000007,
+      "sampleMs": [
+        259.02544599999965,
+        276.06904099999883,
+        276.7906640000001,
+        276.8620149999988,
+        318.813682
+      ]
+    },
+    {
+      "name": "upstream text only (pre-rendered HTML)",
+      "emailsPerSecond": 1898,
+      "medianMsPerEmail": 0.5269048304999997,
+      "sampleMs": [
+        933.7259549999981,
+        1046.5104890000002,
+        1053.8096609999993,
+        1161.0403129999995,
+        1170.2224450000012
+      ]
+    },
+    {
+      "name": "parser text only (pre-rendered HTML)",
+      "emailsPerSecond": 11310,
+      "medianMsPerEmail": 0.08841428850000012,
+      "sampleMs": [
+        166.6595469999993,
+        176.51078300000154,
+        176.82857700000022,
+        178.99002800000017,
+        185.53010300000096
+      ]
+    },
+    {
+      "name": "regex text only (pre-rendered HTML)",
+      "emailsPerSecond": 11442,
+      "medianMsPerEmail": 0.08739973199999986,
+      "sampleMs": [
+        168.2558339999996,
+        173.94824599999993,
+        174.79946399999972,
+        178.8800519999986,
+        181.65357000000222
+      ]
+    },
+    {
+      "name": "tree text only (includes template creation)",
+      "emailsPerSecond": 12187,
+      "medianMsPerEmail": 0.08205393699999967,
+      "sampleMs": [
+        139.24072499999966,
+        148.4277370000018,
+        164.10787399999936,
+        189.13936399999875,
+        275.74652799999967
+      ]
+    }
+  ]
+}

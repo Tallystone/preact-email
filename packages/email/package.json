@@ -1,0 +1,40 @@
+{
+  "name": "@hillac/preact-email",
+  "version": "0.1.0",
+  "type": "module",
+  "files": [
+    "dist",
+    "vendor-manifest.json",
+    "LICENSE.react-email"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./render": {
+      "types": "./dist/render.d.ts",
+      "import": "./dist/render.js"
+    },
+    "./text": {
+      "types": "./dist/text.d.ts",
+      "import": "./dist/text.js"
+    },
+    "./components": {
+      "types": "./dist/components.d.ts",
+      "import": "./dist/components.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "entities": "^8.1.0",
+    "htmlparser2": "^12.0.0",
+    "preact": "^10.29.8",
+    "preact-render-to-string": "^6.8.1"
+  },
+  "description": "Lightweight Preact email components and rendering, vendored from React Email",
+  "license": "MIT",
+  "sideEffects": false
+}

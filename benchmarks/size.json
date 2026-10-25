@@ -1,0 +1,26 @@
+[
+  {
+    "variant": "preact HTML",
+    "bytes": 38275,
+    "gzipBytes": 14166,
+    "bundledModules": 47
+  },
+  {
+    "variant": "preact HTML + text",
+    "bytes": 96541,
+    "gzipBytes": 39713,
+    "bundledModules": 75
+  },
+  {
+    "variant": "upstream HTML",
+    "bytes": 652364,
+    "gzipBytes": 204986,
+    "bundledModules": 111
+  },
+  {
+    "variant": "upstream HTML + text",
+    "bytes": 652398,
+    "gzipBytes": 205004,
+    "bundledModules": 111
+  }
+]

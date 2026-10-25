@@ -1,0 +1,30 @@
+{
+  "name": "react-email-preact-workspace",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@12.6.0",
+  "scripts": {
+    "build": "pnpm -r --if-present build",
+    "typecheck": "tsc --noEmit && tsc -p tools/parity/consumer/tsconfig.json",
+    "test": "node --import tsx --test tools/parity/src/*.test.ts",
+    "bench": "pnpm build && NODE_ENV=production node --import tsx tools/parity/src/benchmark.ts",
+    "sync:components": "node --import tsx scripts/sync-components.ts",
+    "size": "pnpm build && node --import tsx scripts/size.ts",
+    "check": "pnpm build && pnpm typecheck && pnpm test",
+    "preview": "email dev --dir tools/parity/test-emails --esbuild-plugins scripts/react-email-preview.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.5",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "esbuild": "^0.28.2",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "react-email": "6.11.3"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

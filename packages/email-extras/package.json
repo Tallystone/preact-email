@@ -1,0 +1,38 @@
+{
+  "name": "@hillac/preact-email-extras",
+  "version": "0.1.0",
+  "type": "module",
+  "files": [
+    "dist",
+    "LICENSE.react-email",
+    "vendor-manifest.json"
+  ],
+  "exports": {
+    "./markdown": {
+      "types": "./dist/vendor/markdown/index.d.ts",
+      "import": "./dist/vendor/markdown/index.js"
+    },
+    "./code-block": {
+      "types": "./dist/vendor/code-block/index.d.ts",
+      "import": "./dist/vendor/code-block/index.js"
+    },
+    "./tailwind": {
+      "types": "./dist/vendor/tailwind/index.d.ts",
+      "import": "./dist/vendor/tailwind/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "preact": "^10.29.8",
+    "marked": "^15.0.12",
+    "prismjs": "^1.30.0",
+    "css-tree": "3.2.1",
+    "tailwindcss": "^4.1.0",
+    "@types/prismjs": "^1.26.0",
+    "@types/css-tree": "^2.3.11"
+  },
+  "license": "MIT",
+  "description": "Optional Markdown, syntax highlighting and Tailwind components for Preact email"
+}
