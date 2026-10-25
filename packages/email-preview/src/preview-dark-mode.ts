@@ -12,8 +12,8 @@ interface Profile {
 }
 export const profiles: Record<string, Profile> = {
   'apple-macos': {
-    group: 'Authored dark styles',
-    label: 'Apple Mail / Outlook macOS',
+    group: 'Authored dark styles (recommended)',
+    label: 'Apple Mail / Outlook macOS (recommended for dev)',
     mode: 'authored',
   },
   'gmail-web': {
