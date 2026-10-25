@@ -5,7 +5,7 @@ import {
   toPlainText,
   render,
   renderEmail,
-} from '../../../packages/email/src/index.js';
+} from '../../../packages/email/dist/index.js';
 import { createElement as h, Component } from 'preact';
 const cases = [
   '<p>one  <b> two </b> three</p>',

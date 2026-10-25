@@ -1,7 +1,7 @@
 import { createElement as reactElement, type ElementType, type ReactElement } from 'react';
 import { createElement as preactElement, type ComponentType, type VNode } from 'preact';
 import * as upstream from 'react-email';
-import * as local from '../../../packages/email/src/index.js';
+import * as local from '../../../packages/email/dist/index.js';
 
 type Spec = string | number | { tag: string; props?: Record<string, unknown>; children?: Spec[] };
 const e = (tag: string, props: Record<string, unknown> = {}, ...children: Spec[]): Spec => ({ tag, props, children });

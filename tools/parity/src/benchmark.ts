@@ -11,13 +11,13 @@ import {
   renderEmail,
   toPlainText,
 } from '../../../packages/email/dist/index.js';
-import { fixtures, makePreact, makeReact } from './fixtures.js';
-import { normalizeHtml } from './normalize.js';
-import { htmlToTextBaseline } from './html-to-text-baseline.js';
+import { fixtures, makePreact, makeReact } from './fixtures.ts';
+import { normalizeHtml } from './normalize.ts';
+import { htmlToTextBaseline } from './html-to-text-baseline.ts';
 import {
   loadTsxBenchmarkFixtures,
   type BenchmarkFixture,
-} from './benchmark-fixtures.js';
+} from './benchmark-fixtures.ts';
 
 const iterations = Number(process.env.BENCH_ITERATIONS ?? 200);
 const samples = Number(process.env.BENCH_SAMPLES ?? 5);

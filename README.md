@@ -5,22 +5,24 @@ A pnpm / TypeScript monorepo that vendors the **current combined `react-email` p
 - `packages/email`: 16 core components, synchronous and asynchronous HTML rendering, and plain text via a compile-once html-to-text converter. Runtime dependencies: Preact 10, preact-render-to-string, and html-to-text.
 - `packages/email-extras`: optional Markdown, CodeBlock, and Tailwind components with their own dependencies. Installing the core does not install these extras.
 - `tools/parity`: shared template fixtures, upstream comparisons, and benchmarks.
-- [`tools/parity/test-emails`](tools/parity/test-emails/README.md): five standalone TSX emails with twelve scenarios, nested reusable layouts, rich styling, and automatic React/Preact parity tests.
+- [`tools/parity/test-emails`](tools/parity/test-emails/README.md): eight standalone TSX emails with eighteen scenarios, nested reusable layouts, rich styling, and automatic React/Preact parity tests.
 - `scripts/sync-components.ts`: reproducible, pinned component-only source sync. Neither upstream rendering nor CLI/dev-server source is copied.
 
 TypeScript is 7.0.2 in the lockfile, with `strict` and `noUncheckedIndexedAccess` enabled. Preact 10 matches the renderer's peer range. `preact/compat` is retained for upstream `forwardRef` and component utilities; React aliases are not needed. The upstream-generated Prism grammar retains its upstream `@ts-nocheck` directive; project code and other vendored sources are checked.
 
 ## Development
 
-Use Node 22+ and pnpm 12.6.0:
+Use Node 22.18+ (Node 24 LTS recommended) and pnpm 12.6.0:
 
 ```sh
 pnpm install --frozen-lockfile
 pnpm check
-pnpm preview  # Generate static previews in preview/index.html
+pnpm preview  # Start live previews at http://localhost:3000
 pnpm bench
 pnpm size
 ```
+
+Development scripts use native Node type stripping, with explicit `.ts` imports. Tests build the packages first and exercise emitted JavaScript; esbuild compiles TSX fixture bundles and live previews. No `tsx` runtime loader is needed.
 
 The original sketches under `scratch/` are preserved and excluded from compilation. `pnpm build` emits ESM and declarations in each package's `dist/`. These packages have not been published.
 
@@ -53,7 +55,7 @@ const html = render(<Text>Hello</Text>);
 
 `render(node)` returns an HTML string with the XHTML doctype. `renderAsync(node)` supports asynchronous/Suspense rendering, including Tailwind. `renderEmail(node)` returns `{ html, text }` synchronously, evaluating the template once. `toPlainText(html)` converts existing HTML synchronously.
 
-The html-to-text converter compiles its options once when the module loads and reuses that function. It uses upstream's default formatting options, plus a title skip selector to account for Preact's lack of title hoisting. Plain text contains decoded characters, not HTML entities. The previous custom converters and method-selection API have been removed.
+The html-to-text converter compiles its options lazily on the first text conversion and reuses that function. It uses upstream's default formatting options, plus a title skip selector to account for Preact's lack of title hoisting. Plain text contains decoded characters, not HTML entities. The previous custom converters and method-selection API have been removed.
 
 Optional components live in separate entry points:
 
@@ -71,7 +73,7 @@ The extras package installs marked, prismjs, css-tree and tailwindcss. Its separ
 
 ## Compatibility and limits
 
-The tests compare the current combined upstream package, not the deprecated component packages. Eight compact fixtures cover every core component, and separate tests cover all three optional components. Five standalone TSX templates add twelve richer scenarios: checkout confirmations with cart objects, calculated totals, discounts, digital delivery and special characters; full/compact invitations, multi-item and free-replacement receipts, editorial/32-story/empty digests, and access notices with optional raw HTML. Each TSX file is compiled independently for the actual React and Preact runtimes, including its shared nested components. Plain-text assertions are exact, including whitespace. Additional cases cover lists, preformatted content, entities, inline spacing, hidden previews, raw HTML, and links.
+The tests compare the current combined upstream package, not the deprecated component packages. Eight compact fixtures cover every core component, and separate tests cover all three optional components. Eight standalone TSX templates add eighteen richer scenarios: authored dark themes, image swaps with Outlook hooks, light-only opt-out controls; checkout confirmations with cart objects, calculated totals, discounts, digital delivery and special characters; full/compact invitations, multi-item and free-replacement receipts, editorial/32-story/empty digests, and access notices with optional raw HTML. Each TSX file is compiled independently for the actual React and Preact runtimes, including its shared nested components. Plain-text assertions are exact, including whitespace. Additional cases cover lists, preformatted content, entities, inline spacing, hidden previews, raw HTML, and links.
 
 HTML comparison preserves text, attributes, style values and Outlook conditional comments. It normalizes attribute/style declaration order, equivalent entity/void syntax, zero CSS lengths (`0px` versus `0`), renderer transport comments, title hoisting, and meta positioning within the head. These are comparison rules, not transformations applied to output.
 

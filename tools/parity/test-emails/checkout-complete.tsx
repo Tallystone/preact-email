@@ -234,3 +234,6 @@ export const scenarios = [
   excludes: string[];
 }>;
 CheckoutComplete.PreviewProps = scenarios[0]!.props;
+
+CheckoutComplete.Subject = ({ orderId }: CheckoutCompleteProps) =>
+  `Order ${orderId} — checkout complete`;

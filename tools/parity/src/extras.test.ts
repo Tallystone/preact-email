@@ -3,11 +3,11 @@ import test from 'node:test';
 import { createElement as rh } from 'react';
 import { createElement as ph } from 'preact';
 import * as upstream from 'react-email';
-import { Markdown } from '../../../packages/email-extras/src/vendor/markdown/index.js';
-import { CodeBlock, dracula } from '../../../packages/email-extras/src/vendor/code-block/index.js';
-import { Tailwind } from '../../../packages/email-extras/src/vendor/tailwind/index.js';
-import { render, renderAsync, toPlainText, Html, Head, Body, Text, Button } from '../../../packages/email/src/index.js';
-import { normalizeHtml } from './normalize.js';
+import { Markdown } from '../../../packages/email-extras/dist/vendor/markdown/index.js';
+import { CodeBlock, dracula } from '../../../packages/email-extras/dist/vendor/code-block/index.js';
+import { Tailwind } from '../../../packages/email-extras/dist/vendor/tailwind/index.js';
+import { render, renderAsync, toPlainText, Html, Head, Body, Text, Button } from '../../../packages/email/dist/index.js';
+import { normalizeHtml } from './normalize.ts';
 test('optional Markdown HTML and text parity', async () => {
   const source = '# Hello\n\nA **bold** paragraph and [link](https://example.com).\n\n- First\n- Second';
   const actual = render(ph(Markdown, { children: source }));

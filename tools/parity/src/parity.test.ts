@@ -4,10 +4,10 @@ import {
   render as upstreamRender,
   toPlainText as upstreamText,
 } from 'react-email';
-import { render, renderEmail } from '../../../packages/email/src/index.js';
-import { fixtures, makePreact, makeReact } from './fixtures.js';
-import { normalizeHtml } from './normalize.js';
-import { htmlToTextBaseline } from './html-to-text-baseline.js';
+import { render, renderEmail } from '../../../packages/email/dist/index.js';
+import { fixtures, makePreact, makeReact } from './fixtures.ts';
+import { normalizeHtml } from './normalize.ts';
+import { htmlToTextBaseline } from './html-to-text-baseline.ts';
 
 for (const fixture of fixtures) {
   test(`${fixture.name}: HTML parity`, async () => {

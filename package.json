@@ -6,12 +6,12 @@
   "scripts": {
     "build": "pnpm -r --if-present build",
     "typecheck": "tsc --noEmit && tsc -p tools/parity/consumer/tsconfig.json",
-    "test": "node --import tsx --test tools/parity/src/*.test.ts",
-    "bench": "pnpm build && NODE_ENV=production node --import tsx tools/parity/src/benchmark.ts",
-    "sync:components": "node --import tsx scripts/sync-components.ts",
-    "size": "pnpm build && node --import tsx scripts/size.ts",
-    "check": "pnpm build && pnpm typecheck && pnpm test",
-    "preview": "pnpm build && node --import tsx tools/parity/src/preview.ts"
+    "test": "pnpm build && node --test tools/parity/src/*.test.ts",
+    "bench": "pnpm build && NODE_ENV=production node tools/parity/src/benchmark.ts",
+    "sync:components": "node scripts/sync-components.ts",
+    "size": "pnpm build && node scripts/size.ts",
+    "check": "pnpm test && pnpm typecheck",
+    "preview": "node tools/parity/src/preview.ts"
   },
   "devDependencies": {
     "@types/html-to-text": "9.0.4",
@@ -22,10 +22,9 @@
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
     "react-email": "6.11.3",
-    "tsx": "^4.23.15",
     "typescript": "^7.0.2"
   },
   "engines": {
-    "node": ">=22"
+    "node": ">=22.18.0"
   }
 }

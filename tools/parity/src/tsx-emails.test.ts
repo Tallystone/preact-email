@@ -16,16 +16,18 @@ import {
   renderAsync,
   renderEmail,
   toPlainText,
-} from '../../../packages/email/src/index.js';
-import { htmlToTextBaseline } from './html-to-text-baseline.js';
-import { normalizeHtml } from './normalize.js';
-import previewPlugins from '../../../scripts/react-email-preview.js';
+} from '../../../packages/email/dist/index.js';
+import { htmlToTextBaseline } from './html-to-text-baseline.ts';
+import { normalizeHtml } from './normalize.ts';
+import previewPlugins from '../../../scripts/react-email-preview.ts';
 
 interface Scenario {
   name: string;
   props: Record<string, unknown>;
   contains: string[];
   excludes: string[];
+  htmlContains?: string[];
+  htmlExcludes?: string[];
 }
 interface EmailModule<Node> {
   default: ((props: Record<string, unknown>) => Node) & {
@@ -119,6 +121,12 @@ test('standalone TSX email parity', async (t) => {
               `Unexpected reference text: ${text}`,
             );
           const actualHtml = render(preactNode());
+          for (const html of [expectedHtml, actualHtml]) {
+            for (const value of scenario.htmlContains ?? [])
+              assert(html.includes(value), `Missing expected markup: ${value}`);
+            for (const value of scenario.htmlExcludes ?? [])
+              assert(!html.includes(value), `Unexpected markup: ${value}`);
+          }
           await scenarioTest.test('HTML matches upstream', () => {
             assert(actualHtml.startsWith(doctype));
             assert.deepEqual(

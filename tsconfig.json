@@ -12,7 +12,10 @@
     "verbatimModuleSyntax": true,
     "types": [
       "node"
-    ]
+    ],
+    "rewriteRelativeImportExtensions": true,
+    "allowImportingTsExtensions": true,
+    "erasableSyntaxOnly": true
   },
   "include": [
     "packages/**/*.ts",

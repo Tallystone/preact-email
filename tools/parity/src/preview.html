@@ -1,0 +1,715 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Email previews</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        color-scheme: light;
+        margin: 0;
+        font:
+          14px/1.5 system-ui,
+          sans-serif;
+        background: #ffffff;
+        color: #37352f;
+        display: flex;
+        height: 100dvh;
+      }
+      aside {
+        width: 252px;
+        flex-shrink: 0;
+        background: #f7f7f5;
+        border-right: 1px solid #e9e9e7;
+        overflow: auto;
+        padding: 20px 10px;
+      }
+      h1 {
+        font-size: 14px;
+        font-weight: 600;
+        margin: 0 8px 4px;
+      }
+      aside p {
+        margin: 0 8px 20px;
+        color: #787774;
+      }
+      nav a {
+        display: block;
+        padding: 8px 10px;
+        margin: 2px 0;
+        border-radius: 3px;
+        color: inherit;
+        text-decoration: none;
+        overflow-wrap: anywhere;
+      }
+      nav a:hover {
+        background: #efefed;
+      }
+      nav a[aria-current] {
+        background: #e9e9e7;
+      }
+      nav strong {
+        font-size: 13px;
+        font-weight: 500;
+      }
+      nav span {
+        display: block;
+        font-size: 12px;
+        color: #787774;
+      }
+      main {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        min-width: 0;
+      }
+      header {
+        display: flex;
+        gap: 6px;
+        align-items: center;
+        flex-wrap: wrap;
+        padding: 10px 16px;
+        font-size: 12px;
+        background: #fff;
+        border-bottom: 1px solid #e9e9e7;
+      }
+      button,
+      select,
+      input,
+      .button {
+        font: inherit;
+        color: inherit;
+        background: transparent;
+        border: 1px solid transparent;
+        border-radius: 3px;
+        padding: 4px 7px;
+      }
+      button:hover,
+      .button:hover,
+      select:hover {
+        background: #efefed;
+      }
+      input {
+        border-color: #e3e3e0;
+      }
+      :focus-visible {
+        outline: 2px solid #787774;
+        outline-offset: 2px;
+      }
+      #metadata {
+        display: flex;
+        align-items: flex-start;
+        flex-wrap: wrap;
+        gap: 16px;
+        padding: 16px 24px;
+        border-bottom: 1px solid #e9e9e7;
+      }
+      #metadata[hidden],
+      #scenario-control[hidden] {
+        display: none;
+      }
+      #message-details {
+        flex: 1;
+        min-width: 200px;
+      }
+      #scenario-control {
+        margin-left: auto;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2px;
+        font-size: 12px;
+        max-width: 100%;
+      }
+      #scenario-control > span {
+        padding-left: 7px;
+        color: #787774;
+      }
+      #scenario {
+        max-width: 100%;
+      }
+      .dark #scenario-control > span {
+        color: #a1a19b;
+      }
+      #metadata p {
+        margin: 0;
+        display: grid;
+        grid-template-columns: 64px minmax(0, 1fr);
+        gap: 12px;
+        overflow-wrap: anywhere;
+      }
+      #metadata p + p {
+        margin-top: 6px;
+      }
+      #metadata p[hidden] {
+        display: none;
+      }
+      .metadata-label {
+        color: #787774;
+        font-size: 12px;
+        font-weight: 400;
+      }
+      .dark .metadata-label {
+        color: #a1a19b;
+      }
+      #subject {
+        font-weight: 500;
+      }
+      #preheader {
+        color: #787774;
+        font-size: 13px;
+      }
+      .dark #metadata {
+        border-color: #333331;
+      }
+      .dark #preheader {
+        color: #a1a19b;
+      }
+      button,
+      .button,
+      select {
+        cursor: pointer;
+      }
+      .button {
+        text-decoration: none;
+      }
+      button[aria-pressed='true'] {
+        background: #e9e9e7;
+        color: #37352f;
+      }
+      input {
+        width: 68px;
+      }
+      label {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      #status {
+        margin-left: auto;
+        font-size: 12px;
+        color: #787774;
+      }
+      #stage {
+        position: relative;
+        overflow: auto;
+        flex: 1;
+        padding: 24px;
+        display: flex;
+        align-items: flex-start;
+      }
+      #disconnected {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        display: grid;
+        place-content: center;
+        justify-items: center;
+        padding: 24px;
+        background: #fff;
+        text-align: center;
+      }
+      #disconnected[hidden] {
+        display: none;
+      }
+      #disconnected p {
+        margin: 6px 0 14px;
+        color: #787774;
+      }
+      .dark #disconnected {
+        background: #191919;
+      }
+      .dark #disconnected p {
+        color: #a1a19b;
+      }
+      iframe {
+        display: block;
+        flex-shrink: 0;
+        border: 0;
+        background: white;
+        margin: 0 auto;
+        border-radius: 0;
+      }
+      #error {
+        margin: 12px;
+        white-space: pre-wrap;
+        color: #a02323;
+      }
+      body.dark {
+        background: #191919;
+        color: #dededb;
+        color-scheme: dark;
+      }
+      .dark aside,
+      .dark header {
+        background: #202020;
+        border-color: #333331;
+      }
+      .dark button:hover,
+      .dark .button:hover,
+      .dark select:hover,
+      .dark nav a:hover {
+        background: #292927;
+      }
+      .dark nav a[aria-current],
+      .dark button[aria-pressed='true'] {
+        background: #333331;
+        color: #fff;
+      }
+      .dark nav span,
+      .dark aside p,
+      .dark #status {
+        color: #a1a19b;
+      }
+      iframe {
+        color-scheme: only light;
+      }
+      .view-switch {
+        display: inline-flex;
+        gap: 2px;
+        padding: 2px;
+        border: 1px solid #e3e3e0;
+        border-radius: 4px;
+        background: #f7f7f5;
+      }
+      .view-switch button {
+        padding: 3px 10px;
+        color: #787774;
+      }
+      .view-switch button[aria-pressed='true'] {
+        background: #fff;
+        color: #37352f;
+      }
+      .dark .view-switch {
+        background: #202020;
+        border-color: #333331;
+      }
+      .dark .view-switch button {
+        color: #a1a19b;
+      }
+      .dark .view-switch button[aria-pressed='true'] {
+        background: #373735;
+        color: #fff;
+      }
+      #client-control {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0;
+      }
+      #client-control > span {
+        padding-left: 7px;
+        font-size: 10px;
+        color: #787774;
+      }
+      .dark #client-control > span {
+        color: #a1a19b;
+      }
+      #client-control[hidden] {
+        display: none;
+      }
+      @media (max-width: 700px) {
+        body {
+          flex-direction: column;
+        }
+        aside {
+          width: 100%;
+          max-height: 25dvh;
+          flex-shrink: 0;
+        }
+        main {
+          min-height: 0;
+        }
+        #stage {
+          padding: 12px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <aside>
+      <h1>Email previews</h1>
+      <p id="count">Loading emails…</p>
+      <nav aria-label="Emails"></nav>
+    </aside>
+    <main>
+      <header>
+        <label
+          >Viewport
+          <select id="size">
+            <option value="full">Fill</option>
+            <option value="375">Mobile · 375</option>
+            <option value="768">Tablet · 768</option>
+            <option value="1024">Desktop · 1024</option>
+            <option value="custom">Custom</option>
+          </select></label
+        >
+        <label
+          >W
+          <input
+            id="width"
+            type="number"
+            min="240"
+            max="2560"
+            aria-label="Viewport width"
+        /></label>
+        <label
+          >H
+          <input
+            id="height"
+            type="number"
+            min="240"
+            max="2560"
+            aria-label="Viewport height"
+        /></label>
+        <button
+          id="dark"
+          aria-pressed="false"
+          title="Approximate email dark-mode colors; does not emulate client rendering"
+        >
+          Dark mode sim
+        </button>
+        <label
+          id="client-control"
+          hidden
+          title="Approximates dark-mode colors only, not email-client rendering or CSS compatibility"
+        >
+          <span>Dark-mode approximation</span>
+          <select
+            id="client"
+            aria-label="Dark-mode client approximation"
+          ></select>
+        </label>
+        <a
+          id="open"
+          title="Open the original email HTML"
+          class="button"
+          target="_blank"
+          rel="noopener"
+          >Open ↗</a
+        >
+        <div class="view-switch" role="group" aria-label="Email view">
+          <button id="preview" type="button" aria-pressed="true">
+            Preview
+          </button>
+          <button id="text" type="button" aria-pressed="false">Text</button>
+        </div>
+        <button
+          id="live"
+          aria-pressed="true"
+          title="Automatically refresh on save (on by default)"
+        >
+          Live</button
+        ><span id="status" role="status">Connecting…</span>
+      </header>
+      <pre id="error" role="alert" hidden></pre>
+      <section
+        id="metadata"
+        aria-label="Email subject, preview and scenario"
+        hidden
+      >
+        <div id="message-details">
+          <p id="subject-row">
+            <span class="metadata-label">Subject</span
+            ><span id="subject"></span>
+          </p>
+          <p id="preview-row">
+            <span class="metadata-label">Preview</span
+            ><span id="preheader"></span>
+          </p>
+        </div>
+        <label id="scenario-control" hidden>
+          <span>Scenario</span>
+          <select id="scenario" aria-label="Email scenario"></select>
+        </label>
+      </section>
+      <div id="stage">
+        <div id="disconnected" role="status" hidden>
+          <strong>Preview server disconnected</strong>
+          <p>Restart the preview server to load this email.</p>
+          <button id="retry" type="button">Retry connection</button>
+        </div>
+        <iframe
+          title="Email preview"
+          sandbox="allow-same-origin allow-popups allow-popups-to-escape-sandbox"
+        ></iframe>
+      </div>
+    </main>
+    <script type="module">
+      import {
+        profiles,
+        applyDarkMode,
+        resolveProfile,
+      } from '/preview-dark-mode.js';
+      const $ = (id) => document.getElementById(id);
+      const frame = document.querySelector('iframe');
+      // Set to true to restore system-driven UI theming. Email simulation is independent.
+      const followSystemTheme = false;
+      const systemTheme = matchMedia('(prefers-color-scheme: dark)');
+      const updateTheme = () =>
+        document.body.classList.toggle(
+          'dark',
+          followSystemTheme && systemTheme.matches,
+        );
+      systemTheme.addEventListener('change', updateTheme);
+      updateTheme();
+      for (const group of new Set(
+        Object.values(profiles).map((p) => p.group),
+      )) {
+        const options = document.createElement('optgroup');
+        options.label = group;
+        for (const [id, profile] of Object.entries(profiles)) {
+          if (profile.group !== group) continue;
+          const option = document.createElement('option');
+          option.value = id;
+          option.textContent = profile.label;
+          options.append(option);
+        }
+        $('client').append(options);
+      }
+      let emails = [],
+        source,
+        revision = 0;
+      let disconnected = false;
+      let previewRequest = 0;
+      let requestedPreview = '';
+      function setDisconnected(value) {
+        disconnected = value;
+        $('disconnected').hidden = !value;
+        if (value) {
+          frame.style.visibility = 'hidden';
+          $('status').textContent = 'Disconnected';
+        }
+      }
+      async function loadPreview(url) {
+        if (requestedPreview === url && !disconnected) return;
+        requestedPreview = url;
+        const request = ++previewRequest;
+        frame.style.visibility = 'hidden';
+        try {
+          const response = await fetch(url, {
+            method: 'HEAD',
+            signal: AbortSignal.timeout(5000),
+          });
+          if (!response.ok) throw new Error('Preview unavailable');
+          if (request !== previewRequest) return;
+          setDisconnected(false);
+          frame.src = url;
+        } catch {
+          if (request !== previewRequest) return;
+          requestedPreview = '';
+          setDisconnected(true);
+        }
+      }
+      const number = (v, fallback) =>
+        Math.max(240, Math.min(2560, Number(v) || fallback));
+      function state() {
+        const p = new URLSearchParams(location.search);
+        return {
+          id: p.get('email'),
+          size: p.get('size') || 'full',
+          width: number(p.get('w'), 375),
+          height: number(p.get('h'), 800),
+          dark: p.get('dark') === '1',
+          client: resolveProfile(p.get('client')),
+          text: p.get('view') === 'text',
+          live: p.get('live') !== '0',
+        };
+      }
+      function change(values) {
+        const url = new URL(location.href);
+        for (const [key, value] of Object.entries(values))
+          url.searchParams.set(key, String(value));
+        history.pushState(null, '', url);
+        draw();
+      }
+      function draw() {
+        const s = state(),
+          email = emails.find((e) => e.id === s.id) || emails[0];
+        if (email && s.id !== email.id) {
+          const url = new URL(location.href);
+          url.searchParams.set('email', email.id);
+          history.replaceState(null, '', url);
+        }
+        $('client-control').hidden = !s.dark;
+        $('client').value = s.client;
+        $('dark').setAttribute('aria-pressed', String(s.dark));
+        $('preview').setAttribute('aria-pressed', String(!s.text));
+        $('text').setAttribute('aria-pressed', String(s.text));
+        $('live').setAttribute('aria-pressed', String(s.live));
+        $('size').value = ['full', '375', '768', '1024', 'custom'].includes(
+          s.size,
+        )
+          ? s.size
+          : 'custom';
+        $('width').value =
+          s.size === 'custom' || s.size === 'full'
+            ? s.width
+            : number(s.size, 375);
+        $('height').value = s.height;
+        frame.style.width =
+          s.size === 'full' ? '100%' : $('width').value + 'px';
+        frame.style.height = s.height + 'px';
+        const groups = new Map();
+        for (const item of emails) {
+          if (!groups.has(item.template)) groups.set(item.template, []);
+          groups.get(item.template).push(item);
+        }
+        $('count').textContent =
+          groups.size + (groups.size === 1 ? ' email' : ' emails');
+        document.querySelector('nav').replaceChildren(
+          ...[...groups.values()].map((variants) => {
+            const item =
+              variants.find((item) => item.id === email?.id) || variants[0];
+            const a = document.createElement('a'),
+              title = document.createElement('strong');
+            const url = new URL(location.href);
+            url.searchParams.set('email', item.id);
+            a.href = url;
+            title.textContent = item.template;
+            a.append(title);
+            if (item.id === email?.id) a.setAttribute('aria-current', 'page');
+            a.onclick = (event) => {
+              if (
+                event.button ||
+                event.metaKey ||
+                event.ctrlKey ||
+                event.shiftKey ||
+                event.altKey
+              )
+                return;
+              event.preventDefault();
+              change({ email: item.id });
+            };
+            return a;
+          }),
+        );
+        const variants = groups.get(email?.template) ?? [];
+        $('scenario').replaceChildren(
+          ...variants.map((item) => {
+            const option = document.createElement('option');
+            option.value = item.id;
+            option.textContent = item.name;
+            return option;
+          }),
+        );
+        $('scenario').value = email?.id ?? '';
+        $('scenario-control').hidden = variants.length < 2;
+        $('subject').textContent = email?.subject ?? '';
+        $('preheader').textContent = email?.preview ?? '';
+        $('subject-row').hidden = !email?.subject;
+        $('preview-row').hidden = !email?.preview;
+        $('metadata').hidden =
+          !email?.subject && !email?.preview && variants.length < 2;
+        if (email) {
+          const url =
+            '/email?' +
+            new URLSearchParams({
+              id: email.id,
+              view: s.text ? 'text' : 'html',
+              v: String(revision),
+              client: s.client,
+              dark: s.dark ? '1' : '0',
+            });
+          loadPreview(url);
+          $('open').href = url;
+        }
+        if (s.live && !source) connect();
+        if (!s.live && source) {
+          source.close();
+          source = null;
+        }
+        if (!s.live && !disconnected) $('status').textContent = 'Live paused';
+      }
+      async function refresh() {
+        try {
+          const response = await fetch('/api/emails', {
+            signal: AbortSignal.timeout(5000),
+          });
+          if (!response.ok) throw new Error('Unable to load emails');
+          const data = await response.json();
+          emails = data.emails;
+          if (disconnected) requestedPreview = '';
+          setDisconnected(false);
+          $('status').textContent = state().live
+            ? 'Live connected'
+            : 'Live paused';
+          $('error').textContent = data.error;
+          $('error').hidden = !data.error;
+          draw();
+        } catch {
+          setDisconnected(true);
+        }
+      }
+      function connect() {
+        source = new EventSource('/events');
+        source.onmessage = (event) => {
+          const next = Number(event.data);
+          if (revision && next !== revision) {
+            location.reload();
+            return;
+          }
+          revision = next;
+          $('status').textContent = 'Live connected';
+          refresh();
+        };
+        source.onerror = () => {
+          setDisconnected(true);
+        };
+      }
+      frame.onload = () => {
+        let current = false;
+        try {
+          const loaded = new URL(frame.contentWindow.location.href);
+          const requested = new URL(frame.src);
+          if (loaded.href !== requested.href) {
+            if (loaded.protocol === 'about:' && requestedPreview)
+              setDisconnected(true);
+            return;
+          }
+          current = true;
+          const params = loaded.searchParams;
+          if (params.get('view') !== 'text') {
+            applyDarkMode(
+              frame.contentDocument,
+              params.get('client'),
+              params.get('dark') === '1',
+            );
+          }
+        } catch (error) {
+          if (!current) setDisconnected(true);
+          else console.error('Dark-mode approximation unavailable:', error);
+        } finally {
+          if (current && !disconnected) frame.style.visibility = 'visible';
+        }
+      };
+      $('retry').onclick = async () => {
+        $('retry').disabled = true;
+        requestedPreview = '';
+        try {
+          await refresh();
+        } finally {
+          $('retry').disabled = false;
+        }
+      };
+      $('scenario').onchange = () => change({ email: $('scenario').value });
+      $('client').onchange = () => change({ client: $('client').value });
+      $('size').onchange = () => change({ size: $('size').value });
+      $('width').onchange = () =>
+        change({ size: 'custom', w: number($('width').value, 375) });
+      $('height').onchange = () =>
+        change({ h: number($('height').value, 800) });
+      $('dark').onclick = () => change({ dark: state().dark ? 0 : 1 });
+      $('preview').onclick = () => {
+        if (state().text) change({ view: 'html' });
+      };
+      $('text').onclick = () => {
+        if (!state().text) change({ view: 'text' });
+      };
+      $('live').onclick = () => change({ live: state().live ? 0 : 1 });
+      window.onpopstate = draw;
+      await refresh();
+    </script>
+  </body>
+</html>

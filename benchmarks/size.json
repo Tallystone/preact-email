@@ -7,8 +7,8 @@
   },
   {
     "variant": "preact HTML + text",
-    "bytes": 189618,
-    "gzipBytes": 63546,
+    "bytes": 189649,
+    "gzipBytes": 63556,
     "bundledModules": 81
   },
   {
