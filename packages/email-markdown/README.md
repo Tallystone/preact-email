@@ -1,17 +1,15 @@
 # @tallystone/preact-email-markdown
 
-Markdown for Preact email templates, adapted from React Email. Installs marked; the other optional component packages are independent.
+Markdown for Preact emails, powered by marked.
 
 ```sh
-pnpm add @tallystone/preact-email-markdown preact@^10.29.8
+pnpm add @tallystone/preact-email-markdown preact@10
 ```
-
-Use Preact JSX (`jsxImportSource: "preact"`).
 
 ```tsx
 import { Markdown } from '@tallystone/preact-email-markdown';
 
-const content = <Markdown>{'# Hello\nYour update is ready.'}</Markdown>;
+<Markdown>{'# Hello\nYour update is ready.'}</Markdown>
 ```
 
-Includes the upstream MIT license and a pinned source manifest.
+Use `"jsxImportSource": "preact"` in your tsconfig.

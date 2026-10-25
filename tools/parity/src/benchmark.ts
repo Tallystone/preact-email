@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { writeFile } from 'node:fs/promises';
+import { readFile, writeFile } from 'node:fs/promises';
 import { cpus } from 'node:os';
 import { performance } from 'node:perf_hooks';
 import {
@@ -146,7 +146,7 @@ try {
       {
         date: new Date().toISOString(),
         node: process.version,
-        cpu: cpus()[0]?.model,
+        cores: cpus().length,
         selection,
         iterations,
         samples,
@@ -159,6 +159,36 @@ try {
     ) + '\n';
   await writeFile('benchmarks/latest.json', report);
   await writeFile(`benchmarks/latest-${selection}.json`, report);
+
+  const result = (name: string) => results.find(row => row.name === name)!;
+  const speedup = (upstream: string, local: string) =>
+    (result(upstream).medianMsPerEmail / result(local).medianMsPerEmail).toFixed(1);
+  const summary = `**${speedup('upstream HTML', 'preact HTML')}× faster HTML rendering; ${speedup('upstream HTML + text', 'preact HTML + compiled html-to-text')}× faster HTML + plain text** than React Email in the latest benchmark below.`;
+  const rows = [
+    ['React Email — HTML', 'upstream HTML'],
+    ['Preact Email — HTML', 'preact HTML'],
+    ['React Email — HTML + text', 'upstream HTML + text'],
+    ['Preact Email — HTML + text', 'preact HTML + compiled html-to-text'],
+  ];
+  const date = JSON.parse(report).date.slice(0, 10);
+  const table = [
+    '| Renderer | Emails/sec | Seconds/email |',
+    '| --- | ---: | ---: |',
+    ...rows.map(([label, name]) => {
+      const row = result(name!);
+      return `| ${label} | ${row.emailsPerSecond.toLocaleString('en-US')} | ${(row.medianMsPerEmail / 1000).toFixed(6)} |`;
+    }),
+    '',
+    `${date} · Node ${process.version} · ${cpus().length} logical cores · ${process.env.NODE_ENV === 'production' ? 'production' : 'development'} mode.`,
+    `${corpus.length} fixtures (${selection}); median of ${samples} × ${iterations.toLocaleString('en-US')} renders after warmup. Compilation excluded; HTML and text parity checked before timing. Results vary by workload.`,
+  ].join('\n');
+  let readme = await readFile('README.md', 'utf8');
+  for (const [section, content] of [['benchmark-summary', summary], ['benchmarks', table]]) {
+    const pattern = new RegExp(`<!-- ${section}:start -->[\\s\\S]*?<!-- ${section}:end -->`);
+    if (!pattern.test(readme)) throw new Error(`Missing README markers for ${section}`);
+    readme = readme.replace(pattern, () => `<!-- ${section}:start -->\n${content}\n<!-- ${section}:end -->`);
+  }
+  await writeFile('README.md', readme);
 } finally {
   await tsx?.dispose();
 }

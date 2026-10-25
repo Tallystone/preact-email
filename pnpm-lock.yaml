@@ -162,6 +162,18 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+catalogs:
+  default:
+    esbuild:
+      specifier: ^0.28.2
+      version: 0.28.2
+    htmlparser2:
+      specifier: ^12.0.0
+      version: 12.0.0
+    preact:
+      specifier: ^10.29.8
+      version: 10.29.8
+
 importers:
 
   .:
@@ -179,10 +191,10 @@ importers:
         specifier: ^19.3.0
         version: 19.3.0
       esbuild:
-        specifier: ^0.28.2
+        specifier: 'catalog:'
         version: 0.28.2
       preact:
-        specifier: ^10.29.8
+        specifier: 'catalog:'
         version: 10.29.8(preact-render-to-string@6.8.1)
       react:
         specifier: ^19.3.1
@@ -203,7 +215,7 @@ importers:
         specifier: 9.0.5
         version: 9.0.5
       preact:
-        specifier: ^10.29.8
+        specifier: 'catalog:'
         version: 10.29.8(preact-render-to-string@6.8.1)
       preact-render-to-string:
         specifier: ^6.8.1
@@ -219,7 +231,7 @@ importers:
         version: 1.30.0
     devDependencies:
       preact:
-        specifier: ^10.29.8
+        specifier: 'catalog:'
         version: 10.29.8(preact-render-to-string@6.8.1)
 
   packages/email-markdown:
@@ -229,23 +241,23 @@ importers:
         version: 15.0.12
     devDependencies:
       preact:
-        specifier: ^10.29.8
+        specifier: 'catalog:'
         version: 10.29.8(preact-render-to-string@6.8.1)
 
   packages/email-preview:
     dependencies:
       esbuild:
-        specifier: ^0.28.2
+        specifier: 'catalog:'
         version: 0.28.2
       htmlparser2:
-        specifier: ^12.0.0
+        specifier: 'catalog:'
         version: 12.0.0
     devDependencies:
       '@tallystone/preact-email':
         specifier: workspace:*
         version: link:../email
       preact:
-        specifier: ^10.29.8
+        specifier: 'catalog:'
         version: 10.29.8(preact-render-to-string@6.8.1)
 
   packages/email-tailwind:
@@ -261,7 +273,7 @@ importers:
         version: 4.3.3
     devDependencies:
       preact:
-        specifier: ^10.29.8
+        specifier: 'catalog:'
         version: 10.29.8(preact-render-to-string@6.8.1)
 
   tools/parity:
@@ -270,10 +282,10 @@ importers:
         specifier: workspace:*
         version: link:../../packages/email
       htmlparser2:
-        specifier: ^12.0.0
+        specifier: 'catalog:'
         version: 12.0.0
       preact:
-        specifier: ^10.29.8
+        specifier: 'catalog:'
         version: 10.29.8(preact-render-to-string@6.8.1)
 
 packages:

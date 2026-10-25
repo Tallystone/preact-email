@@ -1,7 +1,7 @@
 {
-  "date": "2026-10-25T12:01:36.301Z",
-  "node": "v24.18.0",
-  "cpu": "AMD Ryzen 7 5700U with Radeon Graphics",
+  "date": "2026-10-25T15:12:49.167Z",
+  "node": "v24.22.1",
+  "cores": 16,
   "selection": "tsx",
   "iterations": 1000,
   "samples": 5,
@@ -14,107 +14,113 @@
     "community-digest.tsx/editorial",
     "community-digest.tsx/large-mapped-collection",
     "community-digest.tsx/empty-collection-no-recipient",
+    "dark-mode-authored.tsx/invitation",
+    "dark-mode-authored.tsx/reservation",
+    "dark-mode-image-swap.tsx/apple-css-only",
+    "dark-mode-image-swap.tsx/apple-and-outlook-hooks",
+    "dark-mode-light-only.tsx/light-only-opt-out",
+    "dark-mode-light-only.tsx/no-opt-out-control",
     "parcel-receipt.tsx/dispatched-multiple-items",
     "parcel-receipt.tsx/pending-free-replacement",
     "trail-invitation.tsx/all-sections",
     "trail-invitation.tsx/compact-unicode"
   ],
-  "checksum": 430707300,
+  "checksum": 342721572,
   "results": [
     {
       "name": "upstream HTML",
-      "emailsPerSecond": 1479,
-      "medianMsPerEmail": 0.6761856689999985,
+      "emailsPerSecond": 1732,
+      "medianMsPerEmail": 0.5772920110000014,
       "sampleMs": [
-        634.1567759999998,
-        649.8397860000005,
-        676.1856689999986,
-        704.5422880000006,
-        857.7339400000001
+        488.97714199999973,
+        551.2831679999981,
+        577.2920110000014,
+        594.1531099999993,
+        666.0208230000001
       ]
     },
     {
       "name": "preact HTML",
-      "emailsPerSecond": 3129,
-      "medianMsPerEmail": 0.31955191099999863,
+      "emailsPerSecond": 4213,
+      "medianMsPerEmail": 0.2373510129999995,
       "sampleMs": [
-        294.2846439999994,
-        317.36368199999924,
-        319.55191099999865,
-        341.75394400000005,
-        347.77602000000115
+        229.94896900000094,
+        230.6051069999994,
+        237.3510129999995,
+        247.85699899999963,
+        325.0745529999997
       ]
     },
     {
       "name": "upstream HTML + text",
-      "emailsPerSecond": 531,
-      "medianMsPerEmail": 1.885007421999995,
+      "emailsPerSecond": 630,
+      "medianMsPerEmail": 1.5864257580000012,
       "sampleMs": [
-        1696.3985939999984,
-        1804.4751180000003,
-        1885.0074219999951,
-        2028.0382969999991,
-        2173.261891
+        1402.3204639999985,
+        1555.9135180000003,
+        1586.4257580000012,
+        1592.848563,
+        1614.7780660000026
       ]
     },
     {
       "name": "preact HTML + upstream html-to-text",
-      "emailsPerSecond": 767,
-      "medianMsPerEmail": 1.304290051,
+      "emailsPerSecond": 981,
+      "medianMsPerEmail": 1.0190537019999992,
       "sampleMs": [
-        1247.9777020000001,
-        1287.8955019999994,
-        1304.290051,
-        1403.1394739999996,
-        1522.921332
+        1010.2804019999999,
+        1014.662468999999,
+        1019.0537019999992,
+        1037.5318180000013,
+        1080.4412860000011
       ]
     },
     {
       "name": "upstream HTML + compiled html-to-text",
-      "emailsPerSecond": 774,
-      "medianMsPerEmail": 1.291199897999999,
+      "emailsPerSecond": 1087,
+      "medianMsPerEmail": 0.9200487229999998,
       "sampleMs": [
-        1281.449274999999,
-        1281.6367979999995,
-        1291.199897999999,
-        1347.093417,
-        1352.6536299999998
+        857.4593429999986,
+        874.9238339999993,
+        920.0487229999999,
+        936.6621429999977,
+        1076.7199079999991
       ]
     },
     {
       "name": "preact HTML + compiled html-to-text",
-      "emailsPerSecond": 1218,
-      "medianMsPerEmail": 0.8212623480000002,
+      "emailsPerSecond": 1637,
+      "medianMsPerEmail": 0.610767702000001,
       "sampleMs": [
-        780.8491329999997,
-        820.0522630000014,
-        821.2623480000002,
-        830.8069009999999,
-        967.9358800000045
+        575.7881039999993,
+        583.0009559999999,
+        610.767702000001,
+        615.9941030000009,
+        671.0444019999995
       ]
     },
     {
       "name": "upstream text only (pre-rendered HTML)",
-      "emailsPerSecond": 1191,
-      "medianMsPerEmail": 0.839802318,
+      "emailsPerSecond": 1327,
+      "medianMsPerEmail": 0.753730394000002,
       "sampleMs": [
-        811.0908599999966,
-        823.0903870000002,
-        839.802318,
-        912.2754600000044,
-        980.3955249999999
+        675.3980389999997,
+        708.4759529999974,
+        753.730394000002,
+        757.7041370000006,
+        881.0243790000022
       ]
     },
     {
       "name": "compiled html-to-text only (pre-rendered HTML)",
-      "emailsPerSecond": 2238,
-      "medianMsPerEmail": 0.44682641200000217,
+      "emailsPerSecond": 3302,
+      "medianMsPerEmail": 0.3028695459999981,
       "sampleMs": [
-        407.8422350000001,
-        413.0342840000012,
-        446.82641200000216,
-        454.9847689999988,
-        466.6030150000006
+        298.6167260000002,
+        300.5372900000002,
+        302.8695459999981,
+        322.31375800000023,
+        374.0545090000014
       ]
     }
   ]

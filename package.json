@@ -17,13 +17,13 @@
     "@types/html-to-text": "9.0.4",
     "@types/node": "^26.6.5",
     "@types/react": "^19.3.0",
-    "esbuild": "^0.28.2",
+    "esbuild": "catalog:",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
     "react-email": "6.11.3",
     "typescript": "^7.0.2",
     "@tallystone/preact-email": "workspace:*",
-    "preact": "^10.29.8"
+    "preact": "catalog:"
   },
   "engines": {
     "node": ">=22.18.0"

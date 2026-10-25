@@ -1,11 +1,19 @@
 {
-  "date": "2026-10-25T12:01:36.301Z",
-  "node": "v24.18.0",
-  "cpu": "AMD Ryzen 7 5700U with Radeon Graphics",
-  "selection": "tsx",
+  "date": "2026-10-25T15:13:17.352Z",
+  "node": "v24.22.1",
+  "cores": 16,
+  "selection": "all",
   "iterations": 1000,
   "samples": 5,
   "fixtures": [
+    "notification",
+    "receipt",
+    "links-entities",
+    "preview-image-skips",
+    "typography",
+    "raw-html",
+    "font-head",
+    "long-email",
     "access-notice.tsx/unrecognised-with-rich-html",
     "access-notice.tsx/recognised-without-cta",
     "checkout-complete.tsx/mixed-cart-with-discount",
@@ -14,107 +22,113 @@
     "community-digest.tsx/editorial",
     "community-digest.tsx/large-mapped-collection",
     "community-digest.tsx/empty-collection-no-recipient",
+    "dark-mode-authored.tsx/invitation",
+    "dark-mode-authored.tsx/reservation",
+    "dark-mode-image-swap.tsx/apple-css-only",
+    "dark-mode-image-swap.tsx/apple-and-outlook-hooks",
+    "dark-mode-light-only.tsx/light-only-opt-out",
+    "dark-mode-light-only.tsx/no-opt-out-control",
     "parcel-receipt.tsx/dispatched-multiple-items",
     "parcel-receipt.tsx/pending-free-replacement",
     "trail-invitation.tsx/all-sections",
     "trail-invitation.tsx/compact-unicode"
   ],
-  "checksum": 430707300,
+  "checksum": 263015496,
   "results": [
     {
       "name": "upstream HTML",
-      "emailsPerSecond": 1479,
-      "medianMsPerEmail": 0.6761856689999985,
+      "emailsPerSecond": 2161,
+      "medianMsPerEmail": 0.4627159840000022,
       "sampleMs": [
-        634.1567759999998,
-        649.8397860000005,
-        676.1856689999986,
-        704.5422880000006,
-        857.7339400000001
+        392.8714269999982,
+        404.5984619999999,
+        462.7159840000022,
+        475.520239999998,
+        618.529475
       ]
     },
     {
       "name": "preact HTML",
-      "emailsPerSecond": 3129,
-      "medianMsPerEmail": 0.31955191099999863,
+      "emailsPerSecond": 4631,
+      "medianMsPerEmail": 0.21593120400000043,
       "sampleMs": [
-        294.2846439999994,
-        317.36368199999924,
-        319.55191099999865,
-        341.75394400000005,
-        347.77602000000115
+        202.2270630000021,
+        203.92632799999956,
+        215.93120400000043,
+        257.10416699999996,
+        257.2784639999991
       ]
     },
     {
       "name": "upstream HTML + text",
-      "emailsPerSecond": 531,
-      "medianMsPerEmail": 1.885007421999995,
+      "emailsPerSecond": 702,
+      "medianMsPerEmail": 1.4235460060000005,
       "sampleMs": [
-        1696.3985939999984,
-        1804.4751180000003,
-        1885.0074219999951,
-        2028.0382969999991,
-        2173.261891
+        1227.2315629999975,
+        1416.126123,
+        1423.5460060000005,
+        1444.553398,
+        1520.9205860000002
       ]
     },
     {
       "name": "preact HTML + upstream html-to-text",
-      "emailsPerSecond": 767,
-      "medianMsPerEmail": 1.304290051,
+      "emailsPerSecond": 1046,
+      "medianMsPerEmail": 0.9560501159999986,
       "sampleMs": [
-        1247.9777020000001,
-        1287.8955019999994,
-        1304.290051,
-        1403.1394739999996,
-        1522.921332
+        900.5940439999995,
+        916.8580779999975,
+        956.0501159999985,
+        974.2588860000014,
+        986.3371099999999
       ]
     },
     {
       "name": "upstream HTML + compiled html-to-text",
-      "emailsPerSecond": 774,
-      "medianMsPerEmail": 1.291199897999999,
+      "emailsPerSecond": 1244,
+      "medianMsPerEmail": 0.8039536179999995,
       "sampleMs": [
-        1281.449274999999,
-        1281.6367979999995,
-        1291.199897999999,
-        1347.093417,
-        1352.6536299999998
+        710.9430599999996,
+        792.6758000000009,
+        803.9536179999996,
+        811.415849,
+        854.6157590000003
       ]
     },
     {
       "name": "preact HTML + compiled html-to-text",
-      "emailsPerSecond": 1218,
-      "medianMsPerEmail": 0.8212623480000002,
+      "emailsPerSecond": 1965,
+      "medianMsPerEmail": 0.5089066979999989,
       "sampleMs": [
-        780.8491329999997,
-        820.0522630000014,
-        821.2623480000002,
-        830.8069009999999,
-        967.9358800000045
+        467.2277200000026,
+        478.1322689999997,
+        508.90669799999887,
+        523.6248099999993,
+        566.331932
       ]
     },
     {
       "name": "upstream text only (pre-rendered HTML)",
-      "emailsPerSecond": 1191,
-      "medianMsPerEmail": 0.839802318,
+      "emailsPerSecond": 1585,
+      "medianMsPerEmail": 0.6309106030000002,
       "sampleMs": [
-        811.0908599999966,
-        823.0903870000002,
-        839.802318,
-        912.2754600000044,
-        980.3955249999999
+        619.4509969999999,
+        630.1027969999996,
+        630.9106030000003,
+        636.969334999998,
+        747.2946259999999
       ]
     },
     {
       "name": "compiled html-to-text only (pre-rendered HTML)",
-      "emailsPerSecond": 2238,
-      "medianMsPerEmail": 0.44682641200000217,
+      "emailsPerSecond": 4043,
+      "medianMsPerEmail": 0.2473234819999998,
       "sampleMs": [
-        407.8422350000001,
-        413.0342840000012,
-        446.82641200000216,
-        454.9847689999988,
-        466.6030150000006
+        233.07677700000022,
+        242.59923400000116,
+        247.32348199999979,
+        305.6494480000001,
+        343.4043330000022
       ]
     }
   ]

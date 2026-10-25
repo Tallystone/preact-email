@@ -3,3 +3,7 @@ packages:
   - tools/*
 allowBuilds:
   esbuild: true
+catalog:
+  preact: ^10.29.8
+  esbuild: ^0.28.2
+  htmlparser2: ^12.0.0
