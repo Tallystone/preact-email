@@ -1,0 +1,72 @@
+name: Update vendored React Email
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Exact stable react-email npm version (for example 6.11.3)'
+        required: true
+        type: string
+      commit:
+        description: 'Full 40-character upstream commit SHA for that version'
+        required: true
+        type: string
+permissions:
+  contents: write
+  pull-requests: write
+concurrency:
+  group: update-vendor
+  cancel-in-progress: false
+jobs:
+  update:
+    if: github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      UPSTREAM_VERSION: ${{ inputs.version }}
+      UPSTREAM_COMMIT: ${{ inputs.commit }}
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '24.18.0'
+          package-manager-cache: false
+      - uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa # v4
+      - name: Update pin and fetch exact source
+        run: |
+          node --input-type=module <<'JS'
+          import { readFileSync, writeFileSync } from 'node:fs';
+          const { UPSTREAM_VERSION: version, UPSTREAM_COMMIT: commit } = process.env;
+          if (!/^\d+\.\d+\.\d+$/.test(version) || !/^[a-f0-9]{40}$/.test(commit)) throw new Error('Expected a stable version and full commit SHA');
+          const file = 'scripts/sync-components.ts';
+          const source = readFileSync(file, 'utf8');
+          if (!/const commit = "[a-f0-9]{40}";/.test(source)) throw new Error('Source pin not found');
+          writeFileSync(file, source.replace(/const commit = "[a-f0-9]{40}";/, `const commit = "${commit}";`));
+          const root = JSON.parse(readFileSync('package.json', 'utf8'));
+          root.devDependencies['react-email'] = version;
+          writeFileSync('package.json', JSON.stringify(root, null, 2) + '\n');
+          JS
+          git init "$RUNNER_TEMP/react-email-upstream"
+          git -C "$RUNNER_TEMP/react-email-upstream" fetch --depth=1 https://github.com/resend/react-email.git "$UPSTREAM_COMMIT"
+          git -C "$RUNNER_TEMP/react-email-upstream" checkout --detach FETCH_HEAD
+          node scripts/sync-components.ts "$RUNNER_TEMP/react-email-upstream"
+      - run: pnpm install --no-frozen-lockfile
+      - run: pnpm check
+      - name: Open update pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+        run: |
+          if test -z "$(git status --porcelain)"; then exit 0; fi
+          branch="vendor/react-email-$UPSTREAM_VERSION-${UPSTREAM_COMMIT:0:12}"
+          git switch -c "$branch"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add scripts/sync-components.ts package.json pnpm-lock.yaml packages
+          git commit -m "Update vendored React Email to $UPSTREAM_VERSION"
+          gh auth setup-git
+          git remote set-url origin "https://github.com/$GITHUB_REPOSITORY.git"
+          git push origin "$branch"
+          printf 'Updates component source to react-email %s at resend/react-email@%s.\n\nUpdates source hashes, licenses, the comparison dependency and lockfile. Full parity tests and type checks passed before this PR was opened. Review upstream dependency changes and adaptations before merging.\n' "$UPSTREAM_VERSION" "$UPSTREAM_COMMIT" > "$RUNNER_TEMP/vendor-pr.md"
+          gh pr create --base "$DEFAULT_BRANCH" --head "$branch" --title "Update React Email vendor source to $UPSTREAM_VERSION" --body-file "$RUNNER_TEMP/vendor-pr.md"

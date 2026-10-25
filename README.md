@@ -124,3 +124,11 @@ Measurements use 50 warmup operations per method and report median warm throughp
 Benchmarks compare React and Preact HTML, HTML plus upstream's per-call converter, and HTML plus the production compile-once converter. Both paths skip titles to account for Preact's lack of title hoisting. Compilation happens before timing and every fixture must pass exact text parity checks.
 
 The size report measures minified production Node bundles with runtime dependencies included, not npm install sizes. The size check excludes React, React DOM and react-email from the core bundle, and ensures the HTML-only entry points exclude html-to-text. Rerun measurements on your workload.
+
+## GitHub workflows
+
+**Update vendored React Email** is manually run from Actions with an exact stable npm version and its full upstream commit SHA. It updates the existing source pin and comparison dependency, regenerates the components and hashes, runs `pnpm check`, and opens a PR. Enable “Allow GitHub Actions to create and approve pull requests” in the repository's Actions settings. Updates need review; they are not automatically merged or published.
+
+**Publish packages** runs when a `vX.Y.Z` tag is pushed. All five package versions must match that tag, and its commit must be on the default branch. It installs the frozen lockfile, runs the checks, packs the packages, and publishes those tarballs with npm provenance. npm handles tarball integrity; there is no separate checksum system. Bump the package versions together (and any affected internal peer ranges), update the lockfile, merge, then push the tag.
+
+Before publishing, configure an npm trusted publisher for each package: GitHub owner `Tallystone`, repository `preact-email`, workflow `publish.yml`, environment `npm`. Create the matching GitHub environment; no npm token secret is used. The repository must be public for npm provenance. New package names may need an initial authenticated publish before their trusted publisher can be configured. See [npm's trusted publishing setup](https://docs.npmjs.com/trusted-publishers/). Publishing multiple packages is not atomic: if a run partially succeeds, inspect npm before retrying; already published versions cannot be overwritten.

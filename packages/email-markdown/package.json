@@ -29,5 +29,10 @@
   "description": "markdown component for Preact email",
   "publishConfig": {
     "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tallystone/preact-email.git",
+    "directory": "packages/email-markdown"
   }
 }

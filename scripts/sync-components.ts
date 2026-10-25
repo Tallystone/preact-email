@@ -6,11 +6,14 @@ import {
   readdir,
   writeFile,
   copyFile,
+  rm,
 } from "node:fs/promises";
 import { join, resolve } from "node:path";
 
-// Deliberately pinned: review and update this alongside the dev-only react-email version.
+// Deliberately pinned; the update workflow changes this and the comparison version together.
 const commit = "e0561e164e9c28859d24373804e30b364931ee77";
+const root = JSON.parse(await readFile('package.json', 'utf8'));
+const version: string = root.devDependencies['react-email'];
 const source = resolve(process.argv[2] ?? "/tmp/react-email-upstream");
 if (
   execFileSync("git", ["-C", source, "rev-parse", "HEAD"], {
@@ -39,6 +42,8 @@ if (
 ) {
   throw new Error("Component source checkout must be clean before syncing");
 }
+const upstreamPackage = JSON.parse(await readFile(join(source, 'packages/react-email/package.json'), 'utf8'));
+if (upstreamPackage.version !== version) throw new Error(`Upstream package version does not match ${version}`);
 const components = [
   "body",
   "button",
@@ -141,6 +146,7 @@ async function walk(relative: string): Promise<void> {
       await copy(path);
   }
 }
+await rm(target, { recursive: true, force: true });
 for (const component of components) await walk(component);
 await copy("element-marker.ts");
 await writeFile(
@@ -159,7 +165,7 @@ const patches = [
 async function manifest(packageDir: string, included: string[], marker: boolean) {
   await copyFile(join(source, "LICENSE.md"), join(packageDir, "LICENSE.react-email"));
   await writeFile(join(packageDir, "vendor-manifest.json"), JSON.stringify({
-    repository: "https://github.com/resend/react-email", commit, version: "6.11.3",
+    repository: "https://github.com/resend/react-email", commit, version,
     components: included, optionalComponents: [], patches,
     sha256: Object.fromEntries(Object.entries(hashes).filter(([file]) =>
       included.some(component => file.startsWith(component + "/")) || (marker && file === "element-marker.ts"))),
@@ -169,6 +175,7 @@ await manifest("packages/email", components, true);
 for (const component of optionalComponents) {
   const packageDir = "packages/email-" + component;
   target = resolve(packageDir, "src/vendor");
+  await rm(target, { recursive: true, force: true });
   await walk(component);
   if (component !== "markdown") await copy("element-marker.ts");
   await manifest(packageDir, [component], component !== "markdown");
