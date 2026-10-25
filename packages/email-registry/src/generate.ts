@@ -1,9 +1,9 @@
 import { mkdir, readdir, readFile, writeFile } from 'node:fs/promises';
 import { dirname, join, relative, resolve, sep } from 'node:path';
 import { build } from 'esbuild';
-// Same email conventions as the preview: components/assets/tests are helpers.
+// Same email conventions as the preview: assets/tests are helpers.
 async function discoverTemplates(directory: string): Promise<string[]> {
-  const excluded = new Set(['node_modules', 'dist', 'build', 'components', 'assets', 'static', '__tests__', '__snapshots__']);
+  const excluded = new Set(['node_modules', 'dist', 'build', 'assets', 'static', '__tests__', '__snapshots__']);
   const files: string[] = [];
   async function visit(path: string) {
     for (const entry of (await readdir(path, { withFileTypes: true })).sort((a, b) => a.name.localeCompare(b.name))) {

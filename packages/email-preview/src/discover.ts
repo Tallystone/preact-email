@@ -1,7 +1,7 @@
 import { readdir } from 'node:fs/promises';
 import { join, relative, sep } from 'node:path';
 
-const excluded = new Set(['node_modules', 'dist', 'build', 'components', 'assets', 'static', '__tests__', '__snapshots__']);
+const excluded = new Set(['node_modules', 'dist', 'build', 'assets', 'static', '__tests__', '__snapshots__']);
 export function templateName(directory: string, file: string): string {
   return relative(directory, file).split(sep).join('/').replace(/\.tsx$/, '');
 }

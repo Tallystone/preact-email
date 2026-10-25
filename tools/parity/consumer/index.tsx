@@ -45,3 +45,11 @@ const invalidPreviews: Scenarios<{ name: string }> = [
   { name: 'Missing', props: {} },
 ];
 void previews; void invalidPreviews;
+
+const syncResult: { html: string; text: string; subject?: string } = validated.renderSync({ quantity: '2' });
+void syncResult;
+// @ts-expect-error Sync rendering also accepts schema input, not output.
+validated.renderSync({ quantity: 2 });
+// @ts-expect-error Sync rendering requires mandatory props.
+validated.renderSync();
+void emails.imageReceipt.renderSync();

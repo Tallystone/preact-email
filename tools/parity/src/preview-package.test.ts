@@ -59,16 +59,17 @@ test('preview package works from an independent consumer project', async t => {
     `);
     await writeFile(join(cwd, 'emails/broken.tsx'), 'export default function Broken() { throw new Error("Template failed"); }');
     await writeFile(join(cwd, 'emails/helper.tsx'), 'export const value = 1;');
-    for (const file of ['components/layout.tsx', '_private.tsx', 'welcome.test.tsx']) {
+    for (const file of ['_private.tsx', 'welcome.test.tsx']) {
       await writeFile(join(cwd, 'emails', file), 'throw new Error("Do not import helpers as email entries");');
     }
+    await writeFile(join(cwd, 'emails/components/layout.tsx'), 'export const Layout = () => <p>Shared</p>;');
     await writeFile(join(cwd, 'emails/static/logo.png'), 'asset');
     await writeFile(join(cwd, 'secret.png'), 'private');
     await symlink(join(cwd, 'secret.png'), join(cwd, 'emails/static/leak.png'));
     const dir = join(cwd, 'emails');
     await t.test('recursive discovery excludes helpers and preserves relative paths', async () => {
       const files = (await discoverTemplates(dir)).map(file => templateName(dir, file));
-      assert.deepEqual(files, ['auth/welcome', 'broken', 'helper', 'orders/receipt']);
+      assert.deepEqual(files, ['auth/welcome', 'broken', 'components/layout', 'helper', 'orders/receipt']);
     });
     await t.test('consumer resolution, PreviewProps, scenarios, subjects and async rendering', async () => {
       const { emails, dependencies } = await renderTemplates(dir, cwd);

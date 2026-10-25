@@ -39,18 +39,61 @@ test('optional schemas validate and transform before subject or rendering', asyn
   assert.equal((await defaults.render()).text, '4');
 });
 
+test('sync rendering validates, transforms and matches async output', async () => {
+  const schema = z.object({ name: z.string().trim().min(1), count: z.string().default('2').transform(Number) });
+  let calls = 0;
+  function Email(props: z.output<typeof schema>) { calls++; return h('p', {}, `${props.name}: ${props.count}`); }
+  Email.Schema = schema;
+  Email.Subject = (props: z.output<typeof schema>) => `${props.name} / ${props.count}`;
+  const email = createEmailRenderer(Email);
+  const result = email.renderSync({ name: ' <Robin> ' });
+  assert.equal(result instanceof Promise, false);
+  assert.equal(result.subject, '<Robin> / 2');
+  assert.equal(result.text, '<Robin>: 2');
+  assert.deepEqual(result, await email.render({ name: ' <Robin> ' }));
+  const before = calls;
+  assert.throws(() => email.renderSync({ name: '' }), z.ZodError);
+  assert.equal(calls, before);
+  const plain = createEmailRenderer(() => h('p', {}, 'No metadata'));
+  assert.deepEqual(plain.renderSync(), await plain.render());
+  const defaults = createEmailRenderer(Object.assign((props: { count: number }) => h('p', {}, props.count), {
+    Schema: z.object({ count: z.number().default(4) }),
+  }));
+  assert.equal(defaults.renderSync().text, '4');
+});
+
+test('sync rendering rejects async validation, subjects and components', () => {
+  let calls = 0;
+  const component = () => { calls++; return h('p', {}, 'Hello'); };
+  const validated = createEmailRenderer(Object.assign(component, {
+    Schema: z.object({}).refine(async () => true),
+  }));
+  assert.throws(() => validated.renderSync(), /Promise|async/i);
+  assert.equal(calls, 0);
+  const subject = createEmailRenderer(Object.assign(() => h('p', {}, 'Hello'), {
+    Subject: async () => 'Hello',
+  }));
+  assert.throws(() => subject.renderSync(), /Async subjects require render/);
+  const suspended = createEmailRenderer(() => { throw Promise.resolve(); });
+  assert.throws(() => suspended.renderSync());
+});
+
 test('registry generation discovers folders, excludes helpers, detects collisions', async () => {
   const cwd = await mkdtemp(join(tmpdir(), 'email-registry-'));
   try {
     const dir = join(cwd, 'emails');
     await mkdir(join(dir, 'orders'), { recursive: true });
+    await mkdir(join(dir, 'components'));
+    await writeFile(join(dir, 'components/notice.tsx'), 'export default () => <p>Notice</p>;');
     await writeFile(join(dir, 'orders/checkout-complete.tsx'), 'export default function Email() { return <p>Hello</p>; }');
     await writeFile(join(dir, 'helper.tsx'), 'export const helper = 1;');
     const out = join(cwd, 'emails.generated.ts');
     await generateRegistry(dir, out);
     const source = await readFile(out, 'utf8');
     assert.match(source, /"orders": \{/);
-    assert.match(source, /"checkoutComplete": createEmailRenderer\(Email0\)/);
+    assert.match(source, /"components": \{/);
+    assert.match(source, /"notice": createEmailRenderer/);
+    assert.match(source, /"checkoutComplete": createEmailRenderer\(Email1\)/);
     assert.match(source, /\.\/emails\/orders\/checkout-complete\.js/);
     assert(!source.includes('helper'));
     await writeFile(join(dir, 'orders/checkout_complete.tsx'), 'export default () => <p>Collision</p>;');
@@ -83,6 +126,7 @@ test('generated registry renders real emails and rejects invalid cart props', as
     const { emails } = await import(pathToFileURL(entry).href);
     const props = { recipient: 'Robin', orderId: 'ORDER-1', cart: [{ sku: 'book', name: 'Field notes', quantity: 2, unitPriceCents: 500 }], shippingCents: 0, taxCents: 0, discountCents: 0 };
     const receipt = await emails.checkoutComplete.render(props);
+    assert.deepEqual(emails.checkoutComplete.renderSync(props), receipt);
     assert.equal(receipt.subject, 'Order ORDER-1 — checkout complete');
     assert.match(receipt.text, /Field notes/);
     await assert.rejects(emails.checkoutComplete.render({ ...props, cart: [{ ...props.cart[0], quantity: -1 }] }));

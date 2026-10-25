@@ -13,7 +13,7 @@ import { emails } from './emails.generated';
 const { html, text, subject } = await emails.orders.receipt.render({ name: 'Robin' });
 ```
 
-Folders become nested objects; `checkout-complete.tsx` becomes `checkoutComplete`. Run the generator when adding, renaming or removing emails, or before your build. Shared components go in `components/` or use an `_` prefix.
+Folders become nested objects; `checkout-complete.tsx` becomes `checkoutComplete`. Run the generator when adding, renaming or removing emails, or before your build. Use an `_` prefix to exclude shared component files or folders.
 
 For validation, install `zod` and attach a schema:
 
@@ -33,12 +33,12 @@ Receipt.PreviewProps = { name: 'Robin' };
 
 `render()` accepts the schema's input type, validates it, then passes the parsed output to the email and subject. Async validation and transforms work. Access the validator through `emails.orders.receipt.schema`.
 
-Without `.Schema`, props are inferred from the component. `.Subject`, `.PreviewProps`, and `.Scenarios` are also optional. Rendering is async and returns HTML, plain text, and a subject when provided.
+Without `.Schema`, props are inferred from the component. `.Subject`, `.PreviewProps`, and `.Scenarios` are also optional. `render()` is async; `renderSync()` returns the same HTML, plain text, and optional subject synchronously. Use `render()` for async schema refinements/transforms, async subjects, or async components such as Tailwind.
 
 For a single email, skip generation:
 
 ```ts
 import { createEmailRenderer } from '@tallystone/preact-email-registry';
 const receipt = createEmailRenderer(Receipt);
-await receipt.render({ name: 'Robin' });
+const { html, text } = receipt.renderSync({ name: 'Robin' });
 ```

@@ -33,6 +33,6 @@ Welcome.Scenarios = [
 ] satisfies Scenarios<{ name: string }>;
 ```
 
-Nested folders appear in the sidebar. Put shared components in `components/` or prefix their names with `_`. Test files are excluded. Put images in `emails/static/` and reference `/static/logo.png`; use `--static-dir` for another asset directory.
+Nested folders appear in the sidebar. Prefix shared component files or folders with `_` to exclude them. Test files are excluded. Put images in `emails/static/` and reference `/static/logo.png`; use `--static-dir` for another asset directory.
 
 `.Subject`, `.PreviewProps`, and `.Scenarios` are optional. An optional `.Schema` Zod validator parses props before previewing. For a typed render registry, use [preact-email-registry](../email-registry/README.md).

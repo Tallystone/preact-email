@@ -1,10 +1,12 @@
 import { h, type ComponentChildren } from 'preact';
-import { renderAsync, toPlainText } from '@tallystone/preact-email';
+import { render, renderAsync } from '@tallystone/preact-email/render';
+import { toPlainText } from '@tallystone/preact-email/text';
 
 /** Structural Zod interface: no validator is imported or installed at runtime. */
 export interface EmailSchema<Input = unknown, Output = unknown> {
   readonly _input: Input;
   readonly _output: Output;
+  parse(input: unknown): Output;
   parseAsync(input: unknown): Promise<Output>;
 }
 type EmailComponent = ((props: any) => ComponentChildren) & {
@@ -20,6 +22,18 @@ export type EmailInput<C extends EmailComponent> = C extends { Schema: EmailSche
 export function createEmailRenderer<C extends EmailComponent>(Component: C) {
   return {
     schema: Component.Schema as C extends { Schema: infer Schema } ? Schema : undefined,
+    renderSync(...args: {} extends EmailInput<C> ? [props?: EmailInput<C>] : [props: EmailInput<C>]) {
+      const input = args[0] === undefined ? {} : args[0];
+      const props = Component.Schema ? Component.Schema.parse(input) : input;
+      const subject = Component.Subject?.(props);
+      if (subject instanceof Promise) {
+        void subject.catch(() => {});
+        throw new TypeError('Async subjects require render(); renderSync() requires a synchronous subject');
+      }
+      if (subject !== undefined && typeof subject !== 'string') throw new TypeError('Subject must return a string');
+      const html = render(h(Component, props as Props<C>));
+      return { html, text: toPlainText(html), ...(subject === undefined ? {} : { subject }) };
+    },
     async render(...args: {} extends EmailInput<C> ? [props?: EmailInput<C>] : [props: EmailInput<C>]) {
       const props = Component.Schema
         ? await Component.Schema.parseAsync(args[0] ?? {})

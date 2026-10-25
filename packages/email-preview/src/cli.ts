@@ -10,7 +10,7 @@ const usage = `Usage: preact-email-preview [directory] [options]
   --host [address]     Expose on the network (default: localhost only)
   --help              Show this help
 
-Finds .tsx emails recursively. Skips components, static, assets, tests,
+Finds .tsx emails recursively. Skips static, assets, tests,
 and directories starting with "." or "_". Each email exports a default
 component with optional .PreviewProps, .Scenarios, .Subject and .Schema.
 `;
