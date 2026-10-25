@@ -1,6 +1,9 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { render as upstreamRender, toPlainText as upstreamText } from 'react-email';
+import {
+  render as upstreamRender,
+  toPlainText as upstreamText,
+} from 'react-email';
 import { render, renderEmail } from '../../../packages/email/src/index.js';
 import { fixtures, makePreact, makeReact } from './fixtures.js';
 import { normalizeHtml } from './normalize.js';
@@ -16,12 +19,15 @@ for (const fixture of fixtures) {
     const expectedHtml = await upstreamRender(makeReact(fixture.spec));
     const expectedText = upstreamText(expectedHtml);
     assert.equal(htmlToTextBaseline(expectedHtml), expectedText);
-    assert.equal(htmlToTextBaseline(render(makePreact(fixture.spec))), expectedText);
+    assert.equal(
+      htmlToTextBaseline(render(makePreact(fixture.spec))),
+      expectedText,
+    );
   });
-  for (const textMethod of ['parser', 'regex', 'tree'] as const) {
-    test(`${fixture.name}: exact ${textMethod} text parity`, async () => {
-      const expected = upstreamText(await upstreamRender(makeReact(fixture.spec)));
-      assert.equal(renderEmail(makePreact(fixture.spec), { textMethod }).text, expected);
-    });
-  }
+  test(`${fixture.name}: compiled plain text matches upstream exactly`, async () => {
+    const expected = upstreamText(
+      await upstreamRender(makeReact(fixture.spec)),
+    );
+    assert.equal(renderEmail(makePreact(fixture.spec)).text, expected);
+  });
 }

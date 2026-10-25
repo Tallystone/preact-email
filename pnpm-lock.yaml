@@ -166,6 +166,9 @@ importers:
 
   .:
     devDependencies:
+      '@types/html-to-text':
+        specifier: 9.0.4
+        version: 9.0.4
       '@types/node':
         specifier: ^26.6.5
         version: 26.6.5
@@ -196,12 +199,9 @@ importers:
 
   packages/email:
     dependencies:
-      entities:
-        specifier: ^8.1.0
-        version: 8.1.0
-      htmlparser2:
-        specifier: ^12.0.0
-        version: 12.0.0
+      html-to-text:
+        specifier: 9.0.5
+        version: 9.0.5
       preact:
         specifier: ^10.29.8
         version: 10.29.8(preact-render-to-string@6.8.1)
@@ -238,9 +238,6 @@ importers:
       '@hillac/preact-email':
         specifier: workspace:*
         version: link:../../packages/email
-      entities:
-        specifier: ^8.1.0
-        version: 8.1.0
       htmlparser2:
         specifier: ^12.0.0
         version: 12.0.0
@@ -479,6 +476,9 @@ packages:
 
   '@types/css-tree@2.3.11':
     resolution: {integrity: sha512-aEokibJOI77uIlqoBOkVbaQGC9zII0A+JH1kcTNKW2CwyYWD8KM6qdo+4c77wD3wZOQfJuNWAr9M4hdk+YhDIg==}
+
+  '@types/html-to-text@9.0.4':
+    resolution: {integrity: sha512-pUY3cKH/Nm2yYrEmDlPR1mR7yszjGx4DrwPjQ702C4/D5CwHuZTgZdIdwPkRbcuhs7BAh2L5rg3CL5cbRiGTCQ==}
 
   '@types/node@26.6.5':
     resolution: {integrity: sha512-uMzsv9stDdofIZBx4UGh4Z9ZgXnGC9seRDscilBcTHAeOFk67MZg/k9bWVfO+bk4qZmG+l52hRnLwUiH2LnJTg==}
@@ -1217,6 +1217,8 @@ snapshots:
       '@types/node': 26.6.5
 
   '@types/css-tree@2.3.11': {}
+
+  '@types/html-to-text@9.0.4': {}
 
   '@types/node@26.6.5':
     dependencies:

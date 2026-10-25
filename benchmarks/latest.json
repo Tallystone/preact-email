@@ -1,151 +1,120 @@
 {
-  "date": "2026-10-25T10:33:28.697Z",
+  "date": "2026-10-25T12:01:36.301Z",
   "node": "v24.18.0",
   "cpu": "AMD Ryzen 7 5700U with Radeon Graphics",
-  "iterations": 2000,
+  "selection": "tsx",
+  "iterations": 1000,
   "samples": 5,
   "fixtures": [
-    "notification",
-    "receipt",
-    "links-entities",
-    "preview-image-skips",
-    "typography",
-    "raw-html",
-    "font-head",
-    "long-email"
+    "access-notice.tsx/unrecognised-with-rich-html",
+    "access-notice.tsx/recognised-without-cta",
+    "checkout-complete.tsx/mixed-cart-with-discount",
+    "checkout-complete.tsx/digital-cart-with-special-characters",
+    "checkout-complete.tsx/fully-discounted-cart",
+    "community-digest.tsx/editorial",
+    "community-digest.tsx/large-mapped-collection",
+    "community-digest.tsx/empty-collection-no-recipient",
+    "parcel-receipt.tsx/dispatched-multiple-items",
+    "parcel-receipt.tsx/pending-free-replacement",
+    "trail-invitation.tsx/all-sections",
+    "trail-invitation.tsx/compact-unicode"
   ],
-  "checksum": 213172994,
+  "checksum": 430707300,
   "results": [
     {
       "name": "upstream HTML",
-      "emailsPerSecond": 3339,
-      "medianMsPerEmail": 0.2994847460000001,
+      "emailsPerSecond": 1479,
+      "medianMsPerEmail": 0.6761856689999985,
       "sampleMs": [
-        431.7117790000011,
-        527.676875000001,
-        598.9694920000002,
-        606.7910389999997,
-        628.7497089999997
+        634.1567759999998,
+        649.8397860000005,
+        676.1856689999986,
+        704.5422880000006,
+        857.7339400000001
       ]
     },
     {
       "name": "preact HTML",
-      "emailsPerSecond": 13714,
-      "medianMsPerEmail": 0.0729156210000001,
+      "emailsPerSecond": 3129,
+      "medianMsPerEmail": 0.31955191099999863,
       "sampleMs": [
-        143.79204500000196,
-        144.2078359999996,
-        145.8312420000002,
-        160.35797399999865,
-        190.4068769999999
+        294.2846439999994,
+        317.36368199999924,
+        319.55191099999865,
+        341.75394400000005,
+        347.77602000000115
       ]
     },
     {
       "name": "upstream HTML + text",
-      "emailsPerSecond": 971,
-      "medianMsPerEmail": 1.0297438980000007,
+      "emailsPerSecond": 531,
+      "medianMsPerEmail": 1.885007421999995,
       "sampleMs": [
-        1918.1119760000001,
-        1930.4522490000018,
-        2059.4877960000013,
-        2125.1531510000004,
-        2462.275749
+        1696.3985939999984,
+        1804.4751180000003,
+        1885.0074219999951,
+        2028.0382969999991,
+        2173.261891
       ]
     },
     {
       "name": "preact HTML + upstream html-to-text",
-      "emailsPerSecond": 1550,
-      "medianMsPerEmail": 0.6451541165000017,
+      "emailsPerSecond": 767,
+      "medianMsPerEmail": 1.304290051,
       "sampleMs": [
-        1257.8889909999998,
-        1284.4818940000005,
-        1290.3082330000034,
-        1351.279926000001,
-        1627.5766480000002
+        1247.9777020000001,
+        1287.8955019999994,
+        1304.290051,
+        1403.1394739999996,
+        1522.921332
       ]
     },
     {
-      "name": "preact HTML + parser",
-      "emailsPerSecond": 5594,
-      "medianMsPerEmail": 0.1787770449999989,
+      "name": "upstream HTML + compiled html-to-text",
+      "emailsPerSecond": 774,
+      "medianMsPerEmail": 1.291199897999999,
       "sampleMs": [
-        323.08540099999846,
-        345.95118,
-        357.5540899999978,
-        443.5332390000003,
-        464.8096940000005
+        1281.449274999999,
+        1281.6367979999995,
+        1291.199897999999,
+        1347.093417,
+        1352.6536299999998
       ]
     },
     {
-      "name": "preact HTML + regex",
-      "emailsPerSecond": 5999,
-      "medianMsPerEmail": 0.16668310949999976,
+      "name": "preact HTML + compiled html-to-text",
+      "emailsPerSecond": 1218,
+      "medianMsPerEmail": 0.8212623480000002,
       "sampleMs": [
-        321.227684999998,
-        327.0769050000017,
-        333.36621899999955,
-        340.4017879999992,
-        386.9384250000003
-      ]
-    },
-    {
-      "name": "preact HTML + tree",
-      "emailsPerSecond": 7226,
-      "medianMsPerEmail": 0.13839533200000007,
-      "sampleMs": [
-        259.02544599999965,
-        276.06904099999883,
-        276.7906640000001,
-        276.8620149999988,
-        318.813682
+        780.8491329999997,
+        820.0522630000014,
+        821.2623480000002,
+        830.8069009999999,
+        967.9358800000045
       ]
     },
     {
       "name": "upstream text only (pre-rendered HTML)",
-      "emailsPerSecond": 1898,
-      "medianMsPerEmail": 0.5269048304999997,
+      "emailsPerSecond": 1191,
+      "medianMsPerEmail": 0.839802318,
       "sampleMs": [
-        933.7259549999981,
-        1046.5104890000002,
-        1053.8096609999993,
-        1161.0403129999995,
-        1170.2224450000012
+        811.0908599999966,
+        823.0903870000002,
+        839.802318,
+        912.2754600000044,
+        980.3955249999999
       ]
     },
     {
-      "name": "parser text only (pre-rendered HTML)",
-      "emailsPerSecond": 11310,
-      "medianMsPerEmail": 0.08841428850000012,
+      "name": "compiled html-to-text only (pre-rendered HTML)",
+      "emailsPerSecond": 2238,
+      "medianMsPerEmail": 0.44682641200000217,
       "sampleMs": [
-        166.6595469999993,
-        176.51078300000154,
-        176.82857700000022,
-        178.99002800000017,
-        185.53010300000096
-      ]
-    },
-    {
-      "name": "regex text only (pre-rendered HTML)",
-      "emailsPerSecond": 11442,
-      "medianMsPerEmail": 0.08739973199999986,
-      "sampleMs": [
-        168.2558339999996,
-        173.94824599999993,
-        174.79946399999972,
-        178.8800519999986,
-        181.65357000000222
-      ]
-    },
-    {
-      "name": "tree text only (includes template creation)",
-      "emailsPerSecond": 12187,
-      "medianMsPerEmail": 0.08205393699999967,
-      "sampleMs": [
-        139.24072499999966,
-        148.4277370000018,
-        164.10787399999936,
-        189.13936399999875,
-        275.74652799999967
+        407.8422350000001,
+        413.0342840000012,
+        446.82641200000216,
+        454.9847689999988,
+        466.6030150000006
       ]
     }
   ]

@@ -7,9 +7,9 @@
   },
   {
     "variant": "preact HTML + text",
-    "bytes": 96541,
-    "gzipBytes": 39713,
-    "bundledModules": 75
+    "bytes": 189618,
+    "gzipBytes": 63546,
+    "bundledModules": 81
   },
   {
     "variant": "upstream HTML",

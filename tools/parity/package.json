@@ -5,7 +5,6 @@
   "dependencies": {
     "@hillac/preact-email": "workspace:*",
     "preact": "^10.29.8",
-    "htmlparser2": "^12.0.0",
-    "entities": "^8.1.0"
+    "htmlparser2": "^12.0.0"
   }
 }

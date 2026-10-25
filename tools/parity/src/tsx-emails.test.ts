@@ -15,7 +15,6 @@ import {
   render,
   renderAsync,
   renderEmail,
-  textFromTree,
   toPlainText,
 } from '../../../packages/email/src/index.js';
 import { htmlToTextBaseline } from './html-to-text-baseline.js';
@@ -133,25 +132,18 @@ test('standalone TSX email parity', async (t) => {
               normalizeHtml(expectedHtml),
             );
           });
-          for (const textMethod of ['parser', 'regex', 'tree'] as const) {
-            await scenarioTest.test(
-              `${textMethod} text matches upstream exactly`,
-              () => {
-                const result = renderEmail(preactNode(), { textMethod });
-                assert.equal(result.text, expectedText);
-                assert.deepEqual(
-                  normalizeHtml(result.html),
-                  normalizeHtml(expectedHtml),
-                );
-                assert.equal(
-                  textMethod === 'tree'
-                    ? textFromTree(preactNode())
-                    : toPlainText(actualHtml, textMethod),
-                  expectedText,
-                );
-              },
-            );
-          }
+          await scenarioTest.test(
+            'compiled text matches upstream exactly',
+            () => {
+              const result = renderEmail(preactNode());
+              assert.equal(result.text, expectedText);
+              assert.equal(toPlainText(actualHtml), expectedText);
+              assert.deepEqual(
+                normalizeHtml(result.html),
+                normalizeHtml(expectedHtml),
+              );
+            },
+          );
           await scenarioTest.test(
             'upstream html-to-text on Preact HTML matches exactly',
             () => {

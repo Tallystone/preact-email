@@ -1,19 +1,16 @@
-export type {} from "./email-attributes.js";
-import { render } from "./render.js";
-import type { ComponentChildren } from "preact";
-import { textFromTree, toPlainText, type TextMethod } from "./text.js";
-export * from "./vendor/index.js";
-export { textFromTree, toPlainText, type TextMethod } from "./text.js";
-export { render, renderAsync, doctype } from "./render.js";
-export function renderEmail(
-  node: ComponentChildren,
-  options: { textMethod?: TextMethod } = {},
-): { html: string; text: string } {
-  const method = options.textMethod ?? "parser";
-  const text = method === "tree" ? textFromTree(node) : undefined;
+export type {} from './email-attributes.js';
+import { render } from './render.js';
+import type { ComponentChildren } from 'preact';
+import { toPlainText } from './text.js';
+export * from './vendor/index.js';
+export { toPlainText } from './text.js';
+export { render, renderAsync, doctype } from './render.js';
+
+/** Render the template once, then convert its HTML to text. */
+export function renderEmail(node: ComponentChildren): {
+  html: string;
+  text: string;
+} {
   const html = render(node);
-  return {
-    html,
-    text: text ?? toPlainText(html, method === "regex" ? "regex" : "parser"),
-  };
+  return { html, text: toPlainText(html) };
 }
