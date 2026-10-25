@@ -25,10 +25,12 @@ Welcome.Subject = ({ name }: { name: string }) => `Welcome, ${name}`;
 For multiple previews, attach `.Scenarios` (takes precedence over `.PreviewProps`):
 
 ```tsx
+import type { Scenarios } from '@tallystone/preact-email';
+
 Welcome.Scenarios = [
   { name: 'New customer', props: { name: 'Robin' } },
   { name: 'Returning customer', props: { name: 'Alex' } },
-];
+] satisfies Scenarios<{ name: string }>;
 ```
 
 Nested folders appear in the sidebar. Put shared components in `components/` or prefix their names with `_`. Test files are excluded. Put images in `emails/static/` and reference `/static/logo.png`; use `--static-dir` for another asset directory.

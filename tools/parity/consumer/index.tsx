@@ -33,3 +33,15 @@ void emails.checkoutComplete.schema.safeParse({});
 void emails.checkoutComplete.render({ recipient: 123 });
 // @ts-expect-error Unknown emails are not in the generated registry.
 void emails.unknownEmail;
+
+import type { Scenarios } from '../../../packages/email/dist/index.js';
+const previews = [
+  { name: 'Customer', props: { name: 'Robin' } },
+] satisfies Scenarios<{ name: string }>;
+const invalidPreviews: Scenarios<{ name: string }> = [
+  // @ts-expect-error Scenario props must match the email props.
+  { name: 'Invalid', props: { name: 42 } },
+  // @ts-expect-error Required email props cannot be omitted.
+  { name: 'Missing', props: {} },
+];
+void previews; void invalidPreviews;

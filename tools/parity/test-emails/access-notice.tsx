@@ -1,3 +1,4 @@
+import type { TestScenarios } from './components/scenarios.js';
 import { CodeInline, Heading, Link, Text } from '@tallystone/preact-email';
 import { ActionPanel, EmailShell, Facts, styles } from './components/layout.js';
 
@@ -109,12 +110,7 @@ AccessNotice.Scenarios = [
     contains: ['Confirmed by you', 'confirmed: yes'],
     excludes: ['Review recent visits', 'Archive note:', 'Direct destination:'],
   },
-] satisfies Array<{
-  name: string;
-  props: AccessNoticeProps;
-  contains: string[];
-  excludes: string[];
-}>;
+] satisfies TestScenarios<AccessNoticeProps>;
 
 // Change the scenario index to preview another fixture variant.
 AccessNotice.PreviewProps = AccessNotice.Scenarios[0]!.props;

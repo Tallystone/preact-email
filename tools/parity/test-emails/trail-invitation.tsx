@@ -1,3 +1,4 @@
+import type { TestScenarios } from './components/scenarios.js';
 import { Link, Text } from '@tallystone/preact-email';
 import { ActionPanel, EmailShell, Facts, styles } from './components/layout.js';
 
@@ -136,12 +137,7 @@ TrailInvitation.Scenarios = [
       'Equipment hire',
     ],
   },
-] satisfies Array<{
-  name: string;
-  props: TrailInvitationProps;
-  contains: string[];
-  excludes: string[];
-}>;
+] satisfies TestScenarios<TrailInvitationProps>;
 
 // Change the scenario index to preview another fixture variant.
 TrailInvitation.PreviewProps = TrailInvitation.Scenarios[0]!.props;

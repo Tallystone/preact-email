@@ -1,3 +1,4 @@
+import type { TestScenarios } from './components/scenarios.js';
 import { Column, Heading, Img, Row, Section, Text } from '@tallystone/preact-email';
 import { ActionPanel, EmailShell, Facts, styles } from './components/layout.js';
 
@@ -152,12 +153,7 @@ ParcelReceipt.Scenarios = [
     contains: ['$0.00', 'Packing desk update'],
     excludes: ['Follow the parcel', 'Direct destination:'],
   },
-] satisfies Array<{
-  name: string;
-  props: ParcelReceiptProps;
-  contains: string[];
-  excludes: string[];
-}>;
+] satisfies TestScenarios<ParcelReceiptProps>;
 
 // Change the scenario index to preview another fixture variant.
 ParcelReceipt.PreviewProps = ParcelReceipt.Scenarios[0]!.props;

@@ -1,3 +1,4 @@
+import type { TestScenarios } from './components/scenarios.js';
 import {
   CodeInline,
   Column,
@@ -133,12 +134,7 @@ CommunityDigest.Scenarios = [
     contains: ['0 fresh dispatches', 'The notebook is resting'],
     excludes: ['A new chapter', 'FIELD DISPATCH 1', 'SPRING-ART'],
   },
-] satisfies Array<{
-  name: string;
-  props: CommunityDigestProps;
-  contains: string[];
-  excludes: string[];
-}>;
+] satisfies TestScenarios<CommunityDigestProps>;
 
 // Change the scenario index to preview another fixture variant.
 CommunityDigest.PreviewProps = CommunityDigest.Scenarios[0]!.props;

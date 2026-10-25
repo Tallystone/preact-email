@@ -1,3 +1,4 @@
+import type { TestScenarios } from './components/scenarios.js';
 import { z } from 'zod';
 import { Column, Heading, Row, Section, Text } from '@tallystone/preact-email';
 import { ActionPanel, EmailShell, Facts, styles } from './components/layout.js';
@@ -223,12 +224,7 @@ CheckoutComplete.Scenarios = [
     contains: ['Starter sketch pack', '$0.00', 'No payment was required'],
     excludes: ['DELIVERY ADDRESS', 'Your checkout receipt for'],
   },
-] satisfies Array<{
-  name: string;
-  props: CheckoutCompleteProps;
-  contains: string[];
-  excludes: string[];
-}>;
+] satisfies TestScenarios<CheckoutCompleteProps>;
 CheckoutComplete.PreviewProps = CheckoutComplete.Scenarios[0]!.props;
 
 CheckoutComplete.Subject = ({ orderId }: CheckoutCompleteProps) =>
