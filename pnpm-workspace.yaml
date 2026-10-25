@@ -1,6 +1,8 @@
 packages:
   - packages/*
   - tools/*
+minimumReleaseAge: 7200 # 5 days, in minutes
+minimumReleaseAgeStrict: true
 allowBuilds:
   esbuild: true
 catalog:
