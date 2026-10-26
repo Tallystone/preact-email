@@ -52,6 +52,7 @@ try {
       assert.equal(htmlToTextBaseline(html), text);
       assert.equal(toPlainText(html), text);
       const local = f.asyncOnly ? await renderAsync(f.preact()) : render(f.preact());
+      if (!f.asyncOnly) assert.equal(await renderAsync(f.preact()), local, `${f.name}: sync/async HTML parity`);
       assert.deepEqual(normalizeHtml(local), normalizeHtml(html));
       assert.equal(htmlToTextBaseline(local), text);
       assert.equal(toPlainText(local), text);
@@ -65,6 +66,8 @@ try {
   let checksum = 0;
   type Job = { name: string; run: (i: number) => number | Promise<number> };
   const at = (i: number) => corpus[i % corpus.length]!;
+  const syncCorpus = corpus.filter(f => !f.asyncOnly);
+  const syncAt = (i: number) => syncCorpus[i % syncCorpus.length]!;
   const jobs: Job[] = [
     {
       name: 'upstream HTML',
@@ -109,11 +112,23 @@ try {
       run: (i) => toPlainText(at(i).html).length,
     },
   ];
+  if (syncCorpus.length) jobs.push(
+    { name: 'preact sync HTML', run: i => render(syncAt(i).preact()).length },
+    { name: 'preact async HTML', run: async i => (await renderAsync(syncAt(i).preact())).length },
+    { name: 'preact sync HTML + text', run: i => {
+      const result = renderEmail(syncAt(i).preact());
+      return result.html.length + result.text.length;
+    } },
+    { name: 'preact async HTML + text', run: async i => {
+      const html = await renderAsync(syncAt(i).preact());
+      return html.length + toPlainText(html).length;
+    } },
+  );
   const timings = new Map(jobs.map((j) => [j.name, [] as number[]]));
   for (const job of jobs)
     for (let i = 0; i < 50; i++) checksum += await job.run(i);
   // Rotate job order between samples to reduce order/thermal bias. Time sync loops
-  // without adding a Promise per render; only upstream's async API is awaited.
+  // without adding a Promise per render; await only jobs that return a Promise.
   for (let sample = 0; sample < samples; sample++) {
     console.log(`Sample ${sample + 1}/${samples}`);
     for (let offset = 0; offset < jobs.length; offset++) {
@@ -153,6 +168,7 @@ try {
         iterations,
         samples,
         fixtures: corpus.map((f) => f.name),
+        syncComparisonFixtures: syncCorpus.map(f => f.name),
         checksum,
         results,
       },
