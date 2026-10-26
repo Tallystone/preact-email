@@ -8,8 +8,18 @@ import { render, renderEmail } from '../../../packages/email/dist/index.js';
 import { fixtures, makePreact, makeReact } from './fixtures.ts';
 import { normalizeHtml } from './normalize.ts';
 import { htmlToTextBaseline } from './html-to-text-baseline.ts';
+import { basicHtmlComparisonEnabled, compareBasicHtml } from './basic-html-comparison.ts';
 
 for (const fixture of fixtures) {
+  if (basicHtmlComparisonEnabled) {
+    test(`${fixture.name}: basic HTML comparison`, async () => {
+      await compareBasicHtml(
+        'fixtures', fixture.name,
+        render(makePreact(fixture.spec)),
+        await upstreamRender(makeReact(fixture.spec)),
+      );
+    });
+  }
   test(`${fixture.name}: HTML parity`, async () => {
     const actual = render(makePreact(fixture.spec));
     const expected = await upstreamRender(makeReact(fixture.spec));

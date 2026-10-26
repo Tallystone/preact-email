@@ -1,10 +1,15 @@
 # Preact Email
 
-React Email components, vendored with minimal dependencies and a Preact renderer. Sync or async rendering, HTML and plain text, and an optional lightweight preview server.
+[React-email](https://react.email/) components, vendored, with minimal dependencies and a Preact renderer. Sync or async rendering, HTML and plain text, and an optional lightweight preview server.
 
 <!-- benchmark-summary:start -->
 **2.0× faster HTML rendering; 2.6× faster HTML + plain text** than React Email in the latest benchmark below.
 <!-- benchmark-summary:end -->
+
+Tailwind support in progress, not yet ready.
+
+## Breakages
+Style tags need to use dangerouslySetInnerHTML, as preact will escape the content.
 
 ## Usage
 
@@ -24,7 +29,7 @@ const asyncHtml = await renderAsync(email); // supports Suspense and Tailwind
 const asyncText = toPlainText(asyncHtml);
 ```
 
-Use `render(email)` for synchronous HTML only. Plain text uses a lazily compiled html-to-text converter.
+Use `render(email)` for synchronous HTML only. Plain text uses a lazily compiled html-to-text converter, with the same config as upstream react-email.
 
 Optional packages install separately:
 
@@ -33,7 +38,7 @@ Optional packages install separately:
 | [preact-email-markdown](packages/email-markdown/README.md) | Markdown |
 | [preact-email-code-block](packages/email-code-block/README.md) | Syntax highlighting |
 | [preact-email-tailwind](packages/email-tailwind/README.md) | Tailwind CSS |
-| [preact-email-registry](packages/email-registry/README.md) | Typed render registry and optional Zod validation |
+| [preact-email-registry](packages/email-registry/README.md) | Typed, auto generated, email render registry and optional Zod validation |
 | [preact-email-preview](packages/email-preview/README.md) | Local previews with live reload |
 
 All packages use the `@tallystone` scope.
@@ -46,6 +51,8 @@ pnpm exec preact-email-preview --dir ./emails
 ```
 
 Open http://localhost:3000. Finds TSX emails recursively; shows folders, scenarios, responsive previews and dark-mode approximations. Requires Node 22.18+.
+
+This preveiw server lacks the static analysis and send real emails that the react-email server uses. But it shows subject and preveiw text.
 
 ## Benchmarks
 

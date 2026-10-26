@@ -7,6 +7,7 @@
     "build": "pnpm -r --if-present build",
     "typecheck": "tsc --noEmit && tsc -p tools/parity/consumer/tsconfig.json",
     "test": "pnpm build && node --test tools/parity/src/*.test.ts",
+    "test:html-basic": "pnpm build && BASIC_HTML_COMPARISON=1 node --test tools/parity/src/parity.test.ts tools/parity/src/tsx-emails.test.ts tools/parity/src/optional-components.test.ts",
     "bench": "pnpm build && NODE_ENV=production node tools/parity/src/benchmark.ts",
     "sync:components": "node scripts/sync-components.ts",
     "size": "pnpm build && node scripts/size.ts",

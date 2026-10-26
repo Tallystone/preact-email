@@ -19,6 +19,7 @@ import {
 } from '../../../packages/email/dist/index.js';
 import { htmlToTextBaseline } from './html-to-text-baseline.ts';
 import { normalizeHtml } from './normalize.ts';
+import { basicHtmlComparisonEnabled, compareBasicHtml } from './basic-html-comparison.ts';
 
 interface Scenario {
   name: string;
@@ -113,6 +114,13 @@ test('standalone TSX email parity', async (t) => {
               `Unexpected reference text: ${text}`,
             );
           const actualHtml = scenario.asyncOnly ? await renderAsync(preactNode()) : render(preactNode());
+          if (basicHtmlComparisonEnabled) {
+            await scenarioTest.test('basic HTML comparison', async () => {
+              await compareBasicHtml(
+                `tsx/${file.replace(/\.tsx$/, '')}`, scenario.name, actualHtml, expectedHtml,
+              );
+            });
+          }
           for (const html of [expectedHtml, actualHtml]) {
             for (const value of scenario.htmlContains ?? [])
               assert(html.includes(value), `Missing expected markup: ${value}`);
