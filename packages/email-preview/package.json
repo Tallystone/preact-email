@@ -1,6 +1,6 @@
 {
   "name": "@tallystone/preact-email-preview",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Local, email previews for Preact projects",
   "type": "module",
   "license": "MIT",

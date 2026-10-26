@@ -1,6 +1,6 @@
 {
   "name": "@tallystone/preact-email-registry",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Typed email render functions with optional Zod validation",
   "type": "module",
   "license": "MIT",
