@@ -1,14 +1,28 @@
 import { mkdir, readdir, readFile, writeFile } from 'node:fs/promises';
 import { dirname, join, relative, resolve, sep } from 'node:path';
 import { build } from 'esbuild';
+
+export interface GenerateRegistryOptions {
+  /** Paths relative to the email directory. A leading slash is optional. */
+  ignore?: readonly string[];
+}
+
+function normalizeIgnoredPath(path: string): string {
+  const normalized = path.replaceAll('\\', '/').replace(/^\.?\/+/, '').replace(/\/+$/, '');
+  if (!normalized || normalized.split('/').includes('..')) throw new Error(`Invalid ignored path: ${path}`);
+  return normalized;
+}
+
 // Same email conventions as the preview: assets/tests are helpers.
-async function discoverTemplates(directory: string): Promise<string[]> {
+async function discoverTemplates(directory: string, ignoredPaths: ReadonlySet<string>): Promise<string[]> {
   const excluded = new Set(['node_modules', 'dist', 'build', 'assets', 'static', '__tests__', '__snapshots__']);
   const files: string[] = [];
   async function visit(path: string) {
     for (const entry of (await readdir(path, { withFileTypes: true })).sort((a, b) => a.name.localeCompare(b.name))) {
       if (/^[._]/.test(entry.name) || excluded.has(entry.name)) continue;
       const file = join(path, entry.name);
+      const relativePath = relative(directory, file).split(sep).join('/');
+      if ([...ignoredPaths].some(ignored => relativePath === ignored || relativePath.startsWith(`${ignored}/`))) continue;
       if (entry.isDirectory()) await visit(file);
       else if (entry.isFile() && entry.name.endsWith('.tsx') && !/\.(test|spec|stories)\.tsx$/.test(entry.name)) files.push(file);
     }
@@ -18,11 +32,16 @@ async function discoverTemplates(directory: string): Promise<string[]> {
 }
 
 /** Writes static imports so TypeScript knows every email and its exact input type. */
-export async function generateRegistry(directory: string, output: string): Promise<void> {
+export async function generateRegistry(
+  directory: string,
+  output: string,
+  options: GenerateRegistryOptions = {},
+): Promise<void> {
   directory = resolve(directory);
   output = resolve(output);
   if (!output.endsWith('.ts')) throw new Error('Registry output must be a .ts file');
-  const files = await discoverTemplates(directory);
+  const ignoredPaths = new Set((options.ignore ?? []).map(normalizeIgnoredPath));
+  const files = await discoverTemplates(directory, ignoredPaths);
   const result = files.length ? await build({
     entryPoints: files, outdir: resolve(dirname(output), '.email-entries'),
     write: false, metafile: true, bundle: false, format: 'esm',

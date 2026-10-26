@@ -15,6 +15,12 @@ const { html, text, subject } = await emails.orders.receipt.render({ name: 'Robi
 
 Folders become nested objects; `checkout-complete.tsx` becomes `checkoutComplete`. Run the generator when adding, renaming or removing emails, or before your build. Use an `_` prefix to exclude shared component files or folders.
 
+Ignore paths relative to the email directory by repeating `--ignore`. A leading slash is optional:
+
+```sh
+pnpm exec preact-email-registry --dir ./emails --ignore /components --ignore /demo-emails
+```
+
 For validation, install `zod` and attach a schema:
 
 ```tsx

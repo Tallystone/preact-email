@@ -84,7 +84,9 @@ test('registry generation discovers folders, excludes helpers, detects collision
     const dir = join(cwd, 'emails');
     await mkdir(join(dir, 'orders'), { recursive: true });
     await mkdir(join(dir, 'components'));
+    await mkdir(join(dir, 'demo-emails'));
     await writeFile(join(dir, 'components/notice.tsx'), 'export default () => <p>Notice</p>;');
+    await writeFile(join(dir, 'demo-emails/example.tsx'), 'export default () => <p>Example</p>;');
     await writeFile(join(dir, 'orders/checkout-complete.tsx'), 'export default function Email() { return <p>Hello</p>; }');
     await writeFile(join(dir, 'helper.tsx'), 'export const helper = 1;');
     const out = join(cwd, 'emails.generated.ts');
@@ -93,9 +95,15 @@ test('registry generation discovers folders, excludes helpers, detects collision
     assert.match(source, /"orders": \{/);
     assert.match(source, /"components": \{/);
     assert.match(source, /"notice": createEmailRenderer/);
-    assert.match(source, /"checkoutComplete": createEmailRenderer\(Email1\)/);
+    assert.match(source, /"checkoutComplete": createEmailRenderer\(Email2\)/);
     assert.match(source, /\.\/emails\/orders\/checkout-complete\.js/);
     assert(!source.includes('helper'));
+    const ignoredOut = join(cwd, 'emails.ignored.generated.ts');
+    await generateRegistry(dir, ignoredOut, { ignore: ['/components', '/demo-emails'] });
+    const ignoredSource = await readFile(ignoredOut, 'utf8');
+    assert(!ignoredSource.includes('components'));
+    assert(!ignoredSource.includes('demo-emails'));
+    assert.match(ignoredSource, /"checkoutComplete": createEmailRenderer\(Email0\)/);
     await writeFile(join(dir, 'orders/checkout_complete.tsx'), 'export default () => <p>Collision</p>;');
     await assert.rejects(generateRegistry(dir, out), /Duplicate registry key/);
   } finally { await rm(cwd, { recursive: true, force: true }); }
