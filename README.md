@@ -9,7 +9,7 @@
 Tailwind support in progress, not yet ready.
 
 ## Breakages
-Style tags need to use dangerouslySetInnerHTML, as preact will escape the content.
+Preact escapes style tags, so if you have `<style>{css}</style>` tags containing `"&<`, you need to use `dangerouslySetInnerHTML={{ __html: css }}` to set the content.
 
 ## Usage
 
