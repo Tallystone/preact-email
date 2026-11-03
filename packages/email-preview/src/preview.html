@@ -479,18 +479,26 @@
       let disconnected = false;
       let previewRequest = 0;
       let requestedPreview = '';
+      let loadedPreview = '';
       function setDisconnected(value) {
         disconnected = value;
-        $('disconnected').hidden = !value;
+        const hasPreview = loadedPreview && loadedPreview === requestedPreview;
+        $('disconnected').hidden = !value || Boolean(hasPreview);
         if (value) {
-          frame.style.visibility = 'hidden';
+          frame.style.visibility = hasPreview ? 'visible' : 'hidden';
           $('status').textContent = 'Disconnected';
         }
       }
       async function loadPreview(url) {
-        if (requestedPreview === url && !disconnected) return;
+        if (requestedPreview === url) return;
         requestedPreview = url;
         const request = ++previewRequest;
+        if (loadedPreview === url) {
+          frame.style.visibility = 'visible';
+          $('disconnected').hidden = true;
+          return;
+        }
+        $('disconnected').hidden = true;
         frame.style.visibility = 'hidden';
         try {
           const response = await fetch(url, {
@@ -503,7 +511,6 @@
           frame.src = url;
         } catch {
           if (request !== previewRequest) return;
-          requestedPreview = '';
           setDisconnected(true);
         }
       }
@@ -699,6 +706,7 @@
             return;
           }
           current = true;
+          loadedPreview = frame.getAttribute('src');
           const params = loaded.searchParams;
           if (params.get('view') !== 'text') {
             applyDarkMode(
@@ -711,7 +719,10 @@
           if (!current) setDisconnected(true);
           else console.error('Dark-mode approximation unavailable:', error);
         } finally {
-          if (current && !disconnected) frame.style.visibility = 'visible';
+          if (current && loadedPreview === requestedPreview) {
+            frame.style.visibility = 'visible';
+            $('disconnected').hidden = true;
+          }
         }
       };
       $('retry').onclick = async () => {

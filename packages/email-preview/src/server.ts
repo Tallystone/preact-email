@@ -13,6 +13,7 @@ export interface PreviewOptions {
   dir?: string;
   /** Files served beneath /static/. Defaults to <dir>/static. */
   staticDir?: string;
+  /** Explicit ports must be available. When omitted, tries ports from 3000 upward. */
   port?: number;
   host?: string;
   log?: (message: string) => void;
@@ -25,7 +26,7 @@ export async function startPreview(options: PreviewOptions = {}) {
   const staticDir = resolve(projectDir, options.staticDir ?? join(directory, 'static'));
   const packageDir = dirname(fileURLToPath(import.meta.url));
   const host = options.host ?? '127.0.0.1';
-  const port = options.port ?? 3000;
+  let port = options.port ?? 3000;
   if (!Number.isInteger(port) || port < 0 || port > 65535) throw new Error('Port must be between 0 and 65535');
   const log = options.log ?? console.log;
   let emails: EmailPreview[] = [];
@@ -156,8 +157,22 @@ export async function startPreview(options: PreviewOptions = {}) {
   });
   await rebuild();
   await new Promise<void>((resolveListen, reject) => {
-    server.once('error', reject);
-    server.listen(port, host, () => { server.removeListener('error', reject); resolveListen(); });
+    function onError(cause: NodeJS.ErrnoException) {
+      if (cause.code === 'EADDRINUSE' && options.port === undefined && port < 5000) {
+        server.listen(++port, host);
+      } else {
+        server.removeListener('error', onError);
+        server.removeListener('listening', onListening);
+        reject(cause);
+      }
+    }
+    function onListening() {
+      server.removeListener('error', onError);
+      resolveListen();
+    }
+    server.on('error', onError);
+    server.once('listening', onListening);
+    server.listen(port, host);
   }).catch(cause => {
     for (const watcher of watchers.values()) watcher.close();
     throw cause;

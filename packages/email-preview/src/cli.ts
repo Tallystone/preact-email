@@ -6,7 +6,7 @@ const usage = `Usage: preact-email-preview [directory] [options]
 
   --dir <path>         Email directory (default: ./emails)
   --static-dir <path>  Static assets served at /static/
-  --port <number>      Port (default: 3000, or PORT)
+  --port <number>      Require this port (or PORT); otherwise use first free port from 3000
   --host [address]     Expose on the network (default: localhost only)
   --help              Show this help
 
@@ -17,7 +17,8 @@ component with optional .PreviewProps, .Scenarios, .Subject and .Schema.
 async function main() {
   const args = process.argv.slice(2).filter(arg => arg !== '--');
   if (args.includes('--help') || args.includes('-h')) { console.log(usage); return; }
-  const options: PreviewOptions = { port: Number(process.env.PORT ?? 3000) };
+  const options: PreviewOptions = {};
+  if (process.env.PORT !== undefined) options.port = Number(process.env.PORT);
   for (let i = 0; i < args.length; i++) {
     const arg = args[i]!;
     const [flag, inline] = arg.split(/=(.*)/s);
